@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Plans | The Northeast Golf Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAF8F5; --surface: #FFFFFF; --surface-alt: #F4F1E9;
+    --border: #E3DDD0; --border-light: #ECE8DE;
+    --text: #141A16; --text-muted: #636C66; --text-subtle: #8A9189;
+    --primary: #213B2E; --primary-hover: #14251D; --primary-soft: rgba(33,59,46,0.05);
+    --accent-gold: #9E7D4C;
+    --shadow-sm: 0 1px 2px rgba(20,26,22,0.04);
+    --shadow-md: 0 4px 12px rgba(20,26,22,0.05);
+    --shadow-lg: 0 12px 32px rgba(20,26,22,0.08);
+    --radius-sm: 2px;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+    --transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  body.onyx-theme {
+    --bg: #0A0B0D; --surface: #141619; --surface-alt: #1A1D21;
+    --border: #24272C; --border-light: #1B1E22;
+    --text: #EDE8DC; --text-muted: #8B8579; --text-subtle: #5F5A50;
+    --primary: #C9A961; --primary-hover: #B49449; --primary-soft: rgba(201,169,97,0.07);
+    --accent-gold: #D4B574;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+  }
+  body.slate-theme {
+    --bg: #064D44; --surface: #0E1210; --surface-alt: #131815;
+    --border: #1E2521; --border-light: #161D1A;
+    --text: #E5ECE7; --text-muted: #839288; --text-subtle: #5C6862;
+    --primary: #0F9B8E; --primary-hover: #09766B; --primary-soft: rgba(15,155,142,0.08);
+    --accent-gold: #FFB400;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  :root            { --topo-opacity: 0.30; }
+  body.onyx-theme  { --topo-opacity: 0.12; }
+  body.slate-theme { --topo-opacity: 0.28; }
+
+  .site-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0; pointer-events: none; opacity: var(--topo-opacity);
+    isolation: isolate; transition: opacity 0.5s ease;
+  }
+  .site-bg-base { position: absolute; inset: 0; background-color: var(--bg); transition: background-color 0.4s ease; }
+  .site-bg-img {
+    position: absolute; inset: 0;
+    background-image: url('images/Topo_Whitinsville.jpg');
+    background-size: cover; background-position: center 50%;
+    filter: var(--topo-img-filter); mix-blend-mode: var(--topo-img-blend);
+  }
+  .site-bg-tint {
+    position: absolute; inset: 0;
+    background-color: var(--topo-tint);
+    mix-blend-mode: var(--topo-tint-blend);
+  }
+  :root            { --topo-img-filter: contrast(1.6) brightness(1.05); --topo-img-blend: multiply;  --topo-tint: #213B2E; --topo-tint-blend: lighten; }
+  body.onyx-theme  { --topo-img-filter: invert(1) contrast(1.8) brightness(1.1); --topo-img-blend: lighten; --topo-tint: #E8CD7A; --topo-tint-blend: darken; }
+  body.slate-theme { --topo-img-filter: invert(1) contrast(1.8) brightness(1.1); --topo-img-blend: lighten; --topo-tint: #8BE8D5; --topo-tint-blend: darken; }
+
+  .site-header, .gallery-intro, .gallery-list, .site-footer { position: relative; z-index: 1; }
+
+  /* Header (matches the rest of the site) */
+  .site-header {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 64px; padding: 0 32px;
+    display: flex; align-items: center; gap: 36px;
+    background-color: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  img.ngc-logo {
+    display: inline-block; width: auto; height: 32px;
+    filter: var(--logo-filter);
+    transition: filter 0.4s ease; user-select: none;
+  }
+  :root            { --logo-filter: none; }
+  body.onyx-theme  { --logo-filter: invert(1) sepia(0.12) saturate(0.45) brightness(0.93); }
+  body.slate-theme { --logo-filter: invert(1) saturate(0.28) brightness(0.92); }
+  .brand-text h1 {
+    font-family: var(--font-serif); font-size: 0.95rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--text); line-height: 1.2;
+  }
+  .brand-text span {
+    font-family: var(--font-mono); font-size: 0.55rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.12em; display: block; margin-top: 2px;
+  }
+  nav.primary-nav { display: flex; gap: 28px; }
+  nav.primary-nav a {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted);
+    padding: 6px 0; border-bottom: 1px solid transparent;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+  nav.primary-nav a:hover { color: var(--text); border-bottom-color: var(--primary); }
+
+  .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .theme-toggle, .hamburger {
+    background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+    width: 40px; height: 40px; border-radius: var(--radius-sm);
+    cursor: pointer; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+  }
+  .theme-toggle:hover, .hamburger:hover {
+    border-color: var(--primary); color: var(--primary); background: var(--primary-soft);
+  }
+  .theme-toggle svg { width: 16px; height: 16px; display: none; }
+  body:not(.onyx-theme):not(.slate-theme) .theme-toggle .icon-sand { display: block; }
+  body.onyx-theme .theme-toggle .icon-onyx { display: block; }
+  body.slate-theme .theme-toggle .icon-slate { display: block; }
+  .hamburger { display: none; }
+
+  /* Headings */
+  h1, h2, h3 {
+    font-family: var(--font-serif); font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.1; color: var(--text);
+  }
+  p { color: var(--text-muted); }
+  a { color: inherit; text-decoration: none; }
+
+  /* Intro */
+  .gallery-intro {
+    max-width: 1240px; margin: 0 auto;
+    padding: 140px 32px 60px;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.22em;
+    color: var(--primary); margin-bottom: 14px;
+    display: inline-block; padding-bottom: 6px;
+    border-bottom: 1px solid var(--primary);
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 500; margin-bottom: 18px;
+  }
+  .lede {
+    font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; max-width: 720px;
+  }
+
+  /* Plan list */
+  .gallery-list {
+    max-width: 1240px; margin: 0 auto;
+    padding: 20px 32px 100px;
+    display: flex; flex-direction: column;
+    gap: 56px;
+  }
+  .plan-item {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    align-items: start;
+  }
+  .plan-frame {
+    border: 1px solid var(--border);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    position: relative;
+    transition: var(--transition);
+  }
+  .plan-frame:hover { box-shadow: var(--shadow-md); }
+  .plan-frame img { display: block; width: 100%; height: auto; }
+  .plan-meta {
+    padding-top: 6px;
+  }
+  .plan-eyebrow {
+    font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase; letter-spacing: 0.2em;
+    margin-bottom: 10px;
+  }
+  .plan-name {
+    font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500;
+    line-height: 1.15; margin-bottom: 8px; color: var(--text);
+  }
+  .plan-loc {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.16em;
+    padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .plan-desc {
+    font-size: 0.95rem; line-height: 1.7; color: var(--text-muted);
+  }
+  .plan-link {
+    margin-top: 18px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--primary);
+    transition: var(--transition);
+  }
+  .plan-link::after { content: '→'; transition: transform 0.2s ease; }
+  .plan-link:hover { color: var(--primary-hover); }
+  .plan-link:hover::after { transform: translateX(3px); }
+
+  /* Footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 56px 32px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    background: color-mix(in srgb, var(--surface-alt) 92%, transparent);
+  }
+  .site-footer img.ngc-logo { height: 96px; opacity: 0.88; }
+  .site-footer .name {
+    font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .site-footer .city {
+    font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.14em;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .site-header { padding: 0 18px; gap: 16px; }
+    nav.primary-nav {
+      position: fixed; top: 64px; left: 0; right: 0;
+      flex-direction: column; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      gap: 0; padding: 0 24px;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      z-index: 90;
+    }
+    nav.primary-nav a { padding: 12px 0; font-size: 0.75rem; }
+    nav.primary-nav.open { max-height: calc(100vh - 64px); padding: 18px 24px; overflow-y: auto; }
+    .hamburger { display: inline-flex; }
+    .brand-text span { display: none; }
+    .brand-text h1 { font-size: 0.85rem; }
+
+    .gallery-intro { padding: 110px 22px 40px; }
+    .gallery-list { padding: 16px 22px 80px; gap: 44px; }
+    .plan-item { grid-template-columns: 1fr; gap: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-bg">
+  <div class="site-bg-base"></div>
+  <div class="site-bg-img"></div>
+  <div class="site-bg-tint"></div>
+</div>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img class="ngc-logo" src="images/NGC_Logo.png" alt="NGC">
+    <div class="brand-text">
+      <h1>The Northeast Golf Co.</h1>
+      <span>Saunderstown · RI</span>
+    </div>
+  </a>
+  <nav class="primary-nav" id="primaryNav">
+    <a href="index.html#what-we-do">What We Do</a>
+    <a href="index.html#design">Design</a>
+    <a href="index.html#management">Management</a>
+    <a href="index.html#team">Team</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand, Onyx, Slate">
+      <svg class="icon-sand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-onyx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
+      <svg class="icon-slate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+  </div>
+</header>
+
+<section class="gallery-intro">
+  <span class="section-eyebrow">Selected Work</span>
+  <h1 class="section-title">Master Plans</h1>
+  <p class="lede">Each master plan is a single, sequenced document a club can execute over a multi-year horizon. Some sit on shelves for decades; the best ones inform daily decisions, capital sequencing, and a shared sense of where a property is going. A selection from across the practice.</p>
+</section>
+
+<section class="gallery-list">
+
+  <article class="plan-item">
+    <a class="plan-frame" href="projects/bass-rocks/index.html">
+      <img src="projects/bass-rocks/assets/master-plan.jpg" alt="Bass Rocks Golf Club 2024 master plan">
+    </a>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">2024 Master Plan</div>
+      <h2 class="plan-name">Bass Rocks Golf Club</h2>
+      <div class="plan-loc">Gloucester · Massachusetts</div>
+      <p class="plan-desc">A coastal Cape Ann club, founded in 1896, with layered design from Findlay, Leeds, and Wogan. The plan reimagines The Meadows and prioritizes early reconstruction of Holes 2 and 7.</p>
+      <a class="plan-link" href="projects/bass-rocks/index.html">View project</a>
+    </div>
+  </article>
+
+  <article class="plan-item">
+    <a class="plan-frame" href="projects/valley-brook/index.html">
+      <img src="images/galleries/master-plans/bergen-county.jpg" alt="Bergen County master plan, Valley Brook Golf Course">
+    </a>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">2026 Master Plan</div>
+      <h2 class="plan-name">Valley Brook Golf Course</h2>
+      <div class="plan-loc">River Vale · New Jersey</div>
+      <p class="plan-desc">A Bergen County–owned course set on rolling terrain in northern New Jersey. The 2026 master plan modernizes routing, strategy, and agronomic systems while honoring the property's working-club character.</p>
+      <a class="plan-link" href="projects/valley-brook/index.html">View project</a>
+    </div>
+  </article>
+
+  <article class="plan-item">
+    <div class="plan-frame">
+      <img src="images/galleries/master-plans/soldier-hill.jpg" alt="Soldier Hill master plan, Bergen County">
+    </div>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">Master Plan</div>
+      <h2 class="plan-name">Soldier Hill at Bergen County</h2>
+      <div class="plan-loc">Emerson · New Jersey</div>
+      <p class="plan-desc">A municipal Bergen County property reworked for strategic interest and broader playability. The plan sequences a phased rebuild of bunkering, greens surrounds, and tee corridors.</p>
+    </div>
+  </article>
+
+  <article class="plan-item">
+    <div class="plan-frame">
+      <img src="images/galleries/master-plans/fairmount.jpg" alt="Fairmount Country Club master plan">
+    </div>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">Master Plan</div>
+      <h2 class="plan-name">Fairmount Country Club</h2>
+      <div class="plan-loc">Chatham · New Jersey</div>
+      <p class="plan-desc">A century-old private club in northern New Jersey. The plan is a long-form framework — bunker re-engineering, restored short grass, refined green complexes — paired with sketched concepts that locate each move in context.</p>
+    </div>
+  </article>
+
+  <article class="plan-item">
+    <div class="plan-frame">
+      <img src="images/galleries/master-plans/fall-river.jpg" alt="Fall River Country Club master plan">
+    </div>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">2022 Master Plan</div>
+      <h2 class="plan-name">Fall River Country Club</h2>
+      <div class="plan-loc">Fall River · Massachusetts</div>
+      <p class="plan-desc">A walk through the property's defining features — old stone, exposed ridges, and a routing that rewards thoughtful play — paired with phased proposals for green surrounds, bunkering, and turf programming.</p>
+    </div>
+  </article>
+
+  <article class="plan-item">
+    <div class="plan-frame">
+      <img src="images/galleries/master-plans/haverhill.jpg" alt="Haverhill Country Club master plan">
+    </div>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">Master Plan</div>
+      <h2 class="plan-name">Haverhill Country Club</h2>
+      <div class="plan-loc">Haverhill · Massachusetts</div>
+      <p class="plan-desc">A New England club with strong bones and a long horizon. The plan documents proposed restoration of strategic shapes — bunkering, fairway widths, and green complex surrounds — supported by hand-drawn study.</p>
+    </div>
+  </article>
+
+  <article class="plan-item">
+    <div class="plan-frame">
+      <img src="images/galleries/master-plans/met-links.jpg" alt="Met Links master plan, Staten Island">
+    </div>
+    <div class="plan-meta">
+      <div class="plan-eyebrow">Master Plan</div>
+      <h2 class="plan-name">Met Links</h2>
+      <div class="plan-loc">Staten Island · New York</div>
+      <p class="plan-desc">A public-access course reworked for community use, agronomic resilience, and a stronger sense of place. The plan ties the routing back to the harbor and the city skyline visible from much of the property.</p>
+    </div>
+  </article>
+
+</section>
+
+<footer class="site-footer">
+  <img class="ngc-logo" src="images/NGC_Logo.png" alt="NGC">
+  <div class="name">The Northeast Golf Company</div>
+  <div class="city">Saunderstown · Rhode Island</div>
+</footer>
+
+<script>
+  const THEMES = ['sand', 'onyx', 'slate'];
+  const THEME_KEY = 'ngc_theme';
+  function applyTheme(t) {
+    if (!THEMES.includes(t)) t = 'slate';
+    document.body.classList.remove('sand-theme', 'onyx-theme', 'slate-theme');
+    if (t !== 'sand') document.body.classList.add(t + '-theme');
+  }
+  function currentTheme() {
+    if (document.body.classList.contains('onyx-theme')) return 'onyx';
+    if (document.body.classList.contains('slate-theme')) return 'slate';
+    return 'sand';
+  }
+  function cycleTheme() {
+    const i = THEMES.indexOf(currentTheme());
+    const next = THEMES[(i + 1) % THEMES.length];
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) || 'slate');
+
+  function toggleNav() {
+    const nav = document.getElementById('primaryNav');
+    if (nav) nav.classList.toggle('open');
+  }
+</script>
+
+</body></html>
