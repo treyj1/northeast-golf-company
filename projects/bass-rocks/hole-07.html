@@ -965,20 +965,38 @@
 
 <!-- DESIGN SHEET -->
 <section class="block">
-  <div class="sketch-block">
-    <div>
-      <span class="section-eyebrow">Design sheet</span>
-      <h2 class="section-title">The plan, drawn at scale.</h2>
-      <p class="lede">The Hole 7 design sheet was the working document carried through construction. It locates the new green, fixes the rebuilt bunkering and lay-up zones, and registers the relationship between the corridor and the rock outcroppings to the right of the green.</p>
-    </div>
-    <div>
-      <div class="sketch-frame">
-        <img src="assets/hole-07/render-sheet.jpg" alt="Hole 7 design sheet">
-      </div>
-      <div class="sketch-meta">Hole 7 design sheet · 2024</div>
-    </div>
-  </div>
+  <span class="section-eyebrow">Design sheet</span>
+  <h2 class="section-title">The plan, drawn at scale.</h2>
+  <p class="lede">The Hole 7 design sheet was the working document carried through construction. It locates the new green, fixes the rebuilt bunkering and lay-up zones, and registers the relationship between the corridor and the rock outcroppings to the right of the green.</p>
+
+  <figure class="design-sheet">
+    <img src="assets/hole-07/render-sheet.jpg" alt="Hole 7 design sheet">
+    <figcaption>Hole 7 design sheet · 2024</figcaption>
+  </figure>
 </section>
+<style>
+  .design-sheet {
+    margin: 36px 0 0;
+    border: 1px solid var(--border);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+  .design-sheet img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .design-sheet figcaption {
+    padding: 12px 18px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+</style>
 
 <hr class="divider">
 
