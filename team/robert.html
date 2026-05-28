@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robert McNeil, ASGCA | The Northeast Golf Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-alt: #F4F1E9;
+    --border: #E3DDD0;
+    --border-light: #ECE8DE;
+    --text: #141A16;
+    --text-muted: #636C66;
+    --text-subtle: #8A9189;
+    --primary: #213B2E;
+    --primary-hover: #14251D;
+    --primary-soft: rgba(33, 59, 46, 0.05);
+    --accent-gold: #9E7D4C;
+    --accent-blue: #3E5A6B;
+    --accent-red: #B94A4A;
+    --shadow-sm: 0 1px 2px rgba(20,26,22,0.04);
+    --shadow-md: 0 4px 12px rgba(20,26,22,0.05);
+    --shadow-lg: 0 12px 32px rgba(20,26,22,0.08);
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+    --transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  body.onyx-theme {
+    --bg: #0A0B0D;
+    --surface: #141619;
+    --surface-alt: #1A1D21;
+    --border: #24272C;
+    --border-light: #1B1E22;
+    --text: #EDE8DC;
+    --text-muted: #8B8579;
+    --text-subtle: #5F5A50;
+    --primary: #C9A961;
+    --primary-hover: #B49449;
+    --primary-soft: rgba(201,169,97,0.07);
+    --accent-gold: #D4B574;
+    --accent-blue: #6B91A8;
+    --accent-red: #C45A5A;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+  }
+  body.slate-theme {
+    --bg: #064D44;
+    --surface: #0E1210;
+    --surface-alt: #131815;
+    --border: #1E2521;
+    --border-light: #161D1A;
+    --text: #E5ECE7;
+    --text-muted: #839288;
+    --text-subtle: #5C6862;
+    --primary: #0F9B8E;
+    --primary-hover: #09766B;
+    --primary-soft: rgba(15,155,142,0.08);
+    --accent-gold: #FFB400;
+    --accent-blue: #1E88E5;
+    --accent-red: #E53935;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  /* ── Site-wide parallax topo background ── */
+  :root            { --topo-opacity: 0.30; }
+  body.onyx-theme  { --topo-opacity: 0.12; }
+  body.slate-theme { --topo-opacity: 0.28; }
+  .site-bg {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0; pointer-events: none;
+    opacity: var(--topo-opacity);
+    isolation: isolate;
+    transition: opacity 0.5s ease;
+  }
+  .site-bg-base { position: absolute; inset: 0; background-color: var(--bg); transition: background-color 0.4s ease; }
+  .site-bg-img {
+    position: absolute; inset: 0;
+    background-image: url('../images/Topo_Whitinsville.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    filter: var(--topo-img-filter);
+    mix-blend-mode: var(--topo-img-blend);
+    transition: filter 0.5s ease;
+  }
+  .site-bg-tint {
+    position: absolute; inset: 0;
+    background-color: var(--topo-tint);
+    mix-blend-mode: var(--topo-tint-blend);
+    transition: background-color 0.5s ease;
+  }
+  :root {
+    --topo-img-filter: contrast(1.6) brightness(1.05);
+    --topo-img-blend: multiply;
+    --topo-tint: #213B2E;
+    --topo-tint-blend: lighten;
+  }
+  body.onyx-theme {
+    --topo-img-filter: invert(1) contrast(1.8) brightness(1.1);
+    --topo-img-blend: lighten;
+    --topo-tint: #E8CD7A;
+    --topo-tint-blend: darken;
+  }
+  body.slate-theme {
+    --topo-img-filter: invert(1) contrast(1.8) brightness(1.1);
+    --topo-img-blend: lighten;
+    --topo-tint: #8BE8D5;
+    --topo-tint-blend: darken;
+  }
+  .site-header, .bio-hero, section.block, .site-footer, hr.divider, .toast {
+    position: relative;
+    z-index: 1;
+  }
+  .site-footer { background: color-mix(in srgb, var(--surface-alt) 92%, transparent); }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  p { color: var(--text-muted); }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Header ── */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    background-color: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  img.ngc-logo {
+    display: inline-block; width: auto; height: 32px;
+    filter: var(--logo-filter);
+    transition: filter 0.4s ease;
+    user-select: none;
+  }
+  :root            { --logo-filter: none; }
+  body.onyx-theme  { --logo-filter: invert(1) sepia(0.12) saturate(0.45) brightness(0.93); }
+  body.slate-theme { --logo-filter: invert(1) saturate(0.28) brightness(0.92); }
+
+  .brand-text h1 {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .brand-text span {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-top: 2px;
+  }
+  nav.primary-nav { display: flex; gap: 28px; }
+  nav.primary-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition);
+  }
+  nav.primary-nav a:hover { color: var(--text); border-bottom-color: var(--primary); }
+
+  .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    padding: 0;
+  }
+  .theme-toggle:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+  .theme-toggle svg { width: 16px; height: 16px; display: none; }
+  body:not(.onyx-theme):not(.slate-theme) .theme-toggle .icon-sand { display: block; }
+  body.onyx-theme .theme-toggle .icon-onyx  { display: block; }
+  body.slate-theme .theme-toggle .icon-slate { display: block; }
+
+  /* ── Side back ── */
+  .side-back {
+    position: fixed;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+    z-index: 50;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .side-back:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-50%) translateX(2px);
+    box-shadow: var(--shadow-md);
+  }
+  .side-back-arrow { font-size: 0.9rem; line-height: 1; }
+  @media (max-width: 1100px) { .side-back { display: none; } }
+
+  /* ── BIO HERO ── */
+  .bio-hero {
+    padding: 140px 32px 72px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  .bio-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 64px;
+    align-items: end;
+  }
+  .bio-hero-portrait {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+  .bio-hero-portrait img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.92) contrast(1.02);
+  }
+  .bio-hero-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    z-index: 2;
+  }
+  body.onyx-theme .bio-hero-tag, body.slate-theme .bio-hero-tag { color: var(--surface); }
+  .bio-hero-meta {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 14px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 100%);
+    color: rgba(255,255,255,0.92);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .bio-hero-meta strong { color: #fff; font-weight: 700; }
+
+  .bio-hero-text .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--primary);
+    margin-bottom: 18px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--primary);
+  }
+  .bio-hero-text h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.6rem, 5.4vw, 4.4rem);
+    font-weight: 500;
+    line-height: 1.02;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .bio-hero-text .role {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    margin-bottom: 26px;
+    font-weight: 400;
+  }
+  .bio-hero-text .lede {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 28px;
+  }
+  .bio-hero-creds {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  .cred-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cred-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-subtle);
+    font-weight: 700;
+  }
+  .cred-value {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── Section frame ── */
+  section.block {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 96px 32px;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--primary);
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.6vw, 2.8rem);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .lede {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  hr.divider {
+    border: 0; height: 1px;
+    background: var(--border);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ── Approach: two-column body + sidebar quotes ── */
+  .approach-grid {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .approach-body p {
+    font-size: 1.05rem;
+    line-height: 1.78;
+    margin-bottom: 18px;
+    color: var(--text-muted);
+  }
+  .approach-body p:first-of-type::first-letter {
+    font-family: var(--font-serif);
+    font-size: 3.6rem;
+    float: left;
+    line-height: 0.88;
+    padding: 6px 10px 0 0;
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .pullquote {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    padding: 32px 28px;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 92px;
+  }
+  .pullquote .mark {
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    color: var(--primary);
+    line-height: 0.6;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .pullquote blockquote {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    line-height: 1.4;
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+  .pullquote cite {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* ── Career timeline ── */
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .timeline {
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 24px;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--border-light);
+    align-items: baseline;
+    transition: var(--transition);
+  }
+  .timeline li:hover { background: var(--surface-alt); padding-left: 14px; }
+  .timeline .year {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+  .timeline .entry h4 {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .timeline .entry p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 520px;
+  }
+
+  /* ── Selected works ── */
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 36px;
+  }
+  .work-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 26px 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: var(--transition);
+    cursor: default;
+    min-height: 220px;
+    position: relative;
+  }
+  .work-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .work-card .tag {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+  body.onyx-theme .work-card .tag { color: var(--accent-gold); }
+  .work-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.15;
+  }
+  .work-card .loc {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+  }
+  .work-card .note {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  /* ── Recognition: two columns ── */
+  .recognition-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px 30px;
+    box-shadow: var(--shadow-sm);
+  }
+  .panel-title {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    font-weight: 700;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .panel ul {
+    list-style: none;
+  }
+  .panel ul li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 16px;
+    align-items: baseline;
+  }
+  .panel ul li:last-child { border-bottom: none; }
+  .panel .pl-year {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-subtle);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .panel .pl-body {
+    font-family: var(--font-serif);
+    font-size: 1.02rem;
+    color: var(--text);
+  }
+  .panel .pl-body small {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+    letter-spacing: 0;
+  }
+
+  /* ── Philosophy callout strip ── */
+  .philosophy {
+    background: var(--surface-alt);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 32px;
+  }
+  .philosophy-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .philosophy blockquote {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--text);
+    margin-bottom: 26px;
+  }
+  .philosophy cite {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* ── CTA banner ── */
+  .cta-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 56px 48px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .cta-banner h2 { margin-bottom: 14px; }
+  .cta-banner p { margin: 0 auto 28px; max-width: 540px; }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 12px 20px;
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  body.onyx-theme .cta, body.slate-theme .cta { color: var(--surface); }
+  .cta:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+  .cta::after { content: '→'; transition: transform 0.2s ease; }
+  .cta:hover::after { transform: translateX(3px); }
+  .cta.outline {
+    background: transparent;
+    color: var(--primary);
+    box-shadow: none;
+  }
+  .cta.outline:hover { background: var(--primary-soft); }
+  body.onyx-theme .cta.outline, body.slate-theme .cta.outline { color: var(--primary); }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 56px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .site-footer img.ngc-logo { height: 120px; opacity: 0.88; }
+  .site-footer .name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .site-footer .city {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--primary);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  body.onyx-theme .toast, body.slate-theme .toast { color: var(--surface); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 1000px) {
+    .bio-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .approach-grid, .timeline-grid, .recognition-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pullquote { position: static; }
+    .works-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    .site-header { padding: 0 18px; gap: 16px; }
+    nav.primary-nav { display: none; }
+    section.block { padding: 64px 22px; }
+    .bio-hero { padding: 110px 22px 48px; }
+    .works-grid { grid-template-columns: 1fr; }
+    .timeline li { grid-template-columns: 1fr; gap: 6px; }
+    .panel ul li { grid-template-columns: 1fr; gap: 4px; }
+    .cta-banner { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-bg" id="siteBg">
+  <div class="site-bg-base"></div>
+  <div class="site-bg-img"></div>
+  <div class="site-bg-tint"></div>
+</div>
+
+<a class="side-back" href="../index.html#team">
+  <span class="side-back-arrow">←</span>
+  <span>The Team</span>
+</a>
+
+<header class="site-header">
+  <a class="brand" href="../index.html">
+    <img class="ngc-logo" src="../images/NGC_Logo.png" alt="NGC">
+    <div class="brand-text">
+      <h1>The Northeast Golf Co.</h1>
+      <span>Saunderstown · RI</span>
+    </div>
+  </a>
+  <nav class="primary-nav">
+    <a href="../index.html#what-we-do">What We Do</a>
+    <a href="../index.html#design">Design</a>
+    <a href="../index.html#management">Management</a>
+    <a href="../index.html#team">Team</a>
+    <a href="../index.html#projects">Projects</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand → Onyx → Slate">
+      <svg class="icon-sand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-onyx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
+      <svg class="icon-slate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="bio-hero">
+  <div class="bio-hero-grid">
+    <div class="bio-hero-portrait">
+      <span class="bio-hero-tag">Principal · Founder</span>
+      <img src="../images/Portrait_Robert.webp" alt="Portrait of Robert McNeil">
+      <div class="bio-hero-meta">
+        <span><strong>F.001</strong> Portrait</span>
+        <span>Saunderstown · RI</span>
+      </div>
+    </div>
+    <div class="bio-hero-text">
+      <span class="eyebrow">The Team · Principal</span>
+      <h1>Robert McNeil</h1>
+      <div class="role">Principal Architect &amp; Founder</div>
+      <p class="lede">My time is committed to your project. The work ethic and service commitment brought to each project is the foundation of our success.</p>
+      <div class="bio-hero-creds">
+        <div class="cred-item">
+          <span class="cred-label">Affiliation</span>
+          <span class="cred-value">ASGCA</span>
+        </div>
+        <div class="cred-item">
+          <span class="cred-label">Practice</span>
+          <span class="cred-value">30+ Years</span>
+        </div>
+        <div class="cred-item">
+          <span class="cred-label">Studio</span>
+          <span class="cred-value">Saunderstown, RI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- APPROACH -->
+<section class="block">
+  <div class="approach-grid">
+    <div>
+      <span class="section-eyebrow">About Robert</span>
+      <h2 class="section-title">Finding, studying, designing, building, maintaining.</h2>
+      <div class="approach-body">
+        <p>Robert McNeil has committed his life to the game of golf since swinging his mother's old wooden shafted 9-iron in Massachusetts at 8 years old. Since then, Robert has followed a path of achievement combining quality education and invaluable hands-on experience. He holds a Bachelor's Degree in Business Administration from Bryant University and a Master's Degree in Landscape Architecture from Ohio State University. At Ohio State he created his own academic program specializing in golf course design working within the Agronomy, Engineering, Urban Planning and Landscape Architecture Departments. Both degree programs have proven essential in establishing the proper knowledge base for practicing effective business management and creative golf course design principles.
+</p><p>
+Realizing the importance of understanding successful construction and maintenance practices and techniques, Robert spent three years at New Albany Country Club, a 27-hole Jack Nicklaus signature course in New Albany, Ohio… in the dirt. During this time, Robert assisted in the execution of a number of construction and maintenance projects from the course's inception through grand opening. In order to further broaden his design range, Robert joined the firm of Bird/Houk Land Planners and Architects as a Land Planning Associate gaining invaluable experience related to the creative interfacing of commercial/residential development and golf.</p><p>Robert then joined Keith Foster Golf Course Design assisting in the development and preparation of design documentation, construction specifications and client communications on numerous projects throughout the United States, including the award-winning designs Haymaker, in Steamboat Springs, Colorado and Texas Star in the Dallas-metro area.</p>
+        <p>Recognizing that it lies within the spirited history and traditions of design that new creations can be found, Robert has made a devoted commitment to returning to the revered layouts of the United States and British Isles to research and study the features and forms that define the classic style.</p>
+        <p>Since establishing The Northeast Golf Company in 1996, Robert has provided more than 150 public, private and municipal clients with a full scope of golf course design and development consultation services. This includes award winning layouts at The Preserve in Richmond, RI (ASGCA Design Excellence Award), Skyview Golf Club in Sparta, NJ, the Club at River Oaks in Sherman, CT, Mohegan Sun Golf Club, and Rockleigh Golf Course, Bergen County, NJ.</p>
+        <p>With complete reverence for the history of the game and the wonderful architecture of 1919-1935, Robert has guided many clubs through historic restoration, renovation and master planning projects including Kernwood CC, Gardiner's Bay CC, Bass Rocks GC, and Brookline Golf Club.</p><p>Robert's experience goes one step further as an owner and operator at Kings Crossing Golf Club and The Orchards Golf Course, allowing for a comprehensive approach to be applied to each project. Robert is also a Member of the prestigious American Society of Golf Course Architects.</p><p>Robert's vision has always been to create golf holes that not only meet the goals and objectives of each client, but to design golfing memories that are woven from the historical fabric of the game.</p>
+      </div>
+    </div>
+    <aside class="pullquote">
+      <span class="mark">"</span>
+      <blockquote>We embrace each relationship with energy, vision, and a listening ear.</blockquote>
+      <cite>Robert McNeil, ASGCA</cite>
+    </aside>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SELECTED WORKS -->
+<section class="block">
+  <span class="section-eyebrow">Award-winning work</span>
+  <h2 class="section-title">Broad Vision, Careful Thought, Hand-Crafted Design</h2>
+  <p class="lede"></p>
+
+  <div class="works-grid">
+    <div class="work-card">
+      <h3>The Preserve at Boulder Hills</h3>
+      <span class="loc">Rhode Island</span>
+    </div>
+    <div class="work-card">
+      <h3>Mohegan Sun Golf Club</h3>
+      <span class="loc">Connecticut</span>
+    </div>
+    <div class="work-card">
+      <h3>Rockleigh Golf Course</h3>
+      <span class="loc">New Jersey</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="philosophy-inner">
+    
+    
+    <blockquote>"The Northeast Golf Company is built on a passionate conviction to the craft of golf course architecture. It is our mission to integrate environmentally sound stewardship with exceptional service."</blockquote>
+    <cite>Robert McNeil, ASGCA</cite>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section class="block">
+  <div class="cta-banner">
+    <span class="section-eyebrow">Get in touch</span>
+    <h2>Considering a project?</h2>
+    <div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
+      <a class="cta" href="../index.html#contact">Begin a conversation</a>
+      <a class="cta outline" href="../index.html#projects">See selected projects</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <img class="ngc-logo" src="../images/NGC_Logo.png" alt="NGC">
+  <div class="name">The Northeast Golf Company</div>
+  <div class="city">Saunderstown · Rhode Island</div>
+</footer>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+  // Theme cycling, synced with index.html via shared localStorage key
+  const THEMES = ['sand', 'onyx', 'slate'];
+  const THEME_KEY = 'ngc_theme';
+  const THEME_LABELS = { sand: 'Sand mode', onyx: 'Onyx mode', slate: 'Slate mode' };
+  function applyTheme(t) {
+    if (!THEMES.includes(t)) t = 'slate';
+    document.body.classList.remove('sand-theme', 'onyx-theme', 'slate-theme');
+    if (t !== 'sand') document.body.classList.add(t + '-theme');
+  }
+  function currentTheme() {
+    if (document.body.classList.contains('onyx-theme')) return 'onyx';
+    if (document.body.classList.contains('slate-theme')) return 'slate';
+    return 'sand';
+  }
+  function cycleTheme() {
+    const i = THEMES.indexOf(currentTheme());
+    const next = THEMES[(i + 1) % THEMES.length];
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    showToast(THEME_LABELS[next]);
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) || 'slate');
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  // Parallax topo background
+  const siteBgImg = document.querySelector('.site-bg-img');
+  let parallaxTicking = false;
+  const POS_START = 30, POS_END = 70;
+  function updateParallax() {
+    if (!siteBgImg) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+    const pct = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+    const posY = POS_START + pct * (POS_END - POS_START);
+    siteBgImg.style.backgroundPosition = `center ${posY.toFixed(2)}%`;
+    parallaxTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!parallaxTicking) { requestAnimationFrame(updateParallax); parallaxTicking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', updateParallax, { passive: true });
+  updateParallax();
+</script>
+
+
+
+</body></html>

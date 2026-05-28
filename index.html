@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Northeast Golf Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Sand — Drafting Table */
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-alt: #F4F1E9;
+    --border: #E3DDD0;
+    --border-light: #ECE8DE;
+    --text: #141A16;
+    --text-muted: #636C66;
+    --text-subtle: #8A9189;
+
+    --primary: #213B2E;
+    --primary-hover: #14251D;
+    --primary-soft: rgba(33, 59, 46, 0.05);
+    --accent-gold: #9E7D4C;
+    --accent-gold-soft: #FBF8F2;
+    --accent-blue: #3E5A6B;
+    --accent-red: #B94A4A;
+
+    --shadow-sm: 0 1px 2px rgba(20,26,22,0.04);
+    --shadow-md: 0 4px 12px rgba(20,26,22,0.05);
+    --shadow-lg: 0 12px 32px rgba(20,26,22,0.08);
+
+    --radius-sm: 2px;
+    --radius-md: 3px;
+
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+
+    --transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  body.onyx-theme {
+    --bg: #0A0B0D;
+    --surface: #141619;
+    --surface-alt: #1A1D21;
+    --border: #24272C;
+    --border-light: #1B1E22;
+    --text: #EDE8DC;
+    --text-muted: #8B8579;
+    --text-subtle: #5F5A50;
+    --primary: #C9A961;
+    --primary-hover: #B49449;
+    --primary-soft: rgba(201,169,97,0.07);
+    --accent-gold: #D4B574;
+    --accent-gold-soft: rgba(212,181,116,0.06);
+    --accent-blue: #6B91A8;
+    --accent-red: #C45A5A;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+  }
+
+  body.slate-theme {
+    --bg: #064D44;
+    --surface: #0E1210;
+    --surface-alt: #131815;
+    --border: #1E2521;
+    --border-light: #161D1A;
+    --text: #E5ECE7;
+    --text-muted: #839288;
+    --text-subtle: #5C6862;
+    --primary: #0F9B8E;
+    --primary-hover: #09766B;
+    --primary-soft: rgba(15,155,142,0.08);
+    --accent-gold: #FFB400;
+    --accent-gold-soft: rgba(255,180,0,0.06);
+    --accent-blue: #1E88E5;
+    --accent-red: #E53935;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  /* Theme CSS variables live on <body> (via the theme class), so any property
+     using var(--…) must be set on body or its descendants, never on <html>. */
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  /* Site-wide parallax topo background */
+  /* Opacity now controls line visibility only — the base layer always equals
+     the page bg, so changing this dials lines from invisible → fully colored. */
+  :root            { --topo-opacity: 0.30; }  /* Sand: soft pine */
+  body.onyx-theme  { --topo-opacity: 0.12; }  /* Onyx: very faint brass whisper */
+  body.slate-theme { --topo-opacity: 0.28; }  /* Slate: faded jade */
+
+  /* Three-layer topo (composited inside an isolated stacking context):
+     - .site-bg-base  → solid layer painted with the exact page bg color
+     - .site-bg-img   → inverted+contrast-clamped topo, blended LIGHTEN so the
+                        dark "between-line" areas drop out to the base color
+                        and only the contour lines remain (as white)
+     - .site-bg-tint  → colored layer blended MULTIPLY so those white lines
+                        pick up the tint color, while the base stays the page bg */
+  .site-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: var(--topo-opacity);
+    isolation: isolate;
+    transition: opacity 0.5s ease;
+  }
+  .site-bg-base {
+    position: absolute;
+    inset: 0;
+    background-color: var(--bg);
+    transition: background-color 0.4s ease;
+  }
+  .site-bg-img {
+    position: absolute;
+    inset: 0;
+    background-image: url('images/Topo_Whitinsville.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    filter: var(--topo-img-filter);
+    mix-blend-mode: var(--topo-img-blend);
+    will-change: background-position;
+    transition: filter 0.5s ease;
+  }
+  .site-bg-tint {
+    position: absolute;
+    inset: 0;
+    background-color: var(--topo-tint);
+    mix-blend-mode: var(--topo-tint-blend);
+    transition: background-color 0.5s ease;
+  }
+
+  /* Sand — paper, warm forest-pine contour lines.
+     Topo isn't inverted; we contrast-clamp and tint the dark lines via a
+     darken-blended overlay so they take on the pine color. */
+  :root {
+    --topo-img-filter: contrast(1.6) brightness(1.05);
+    --topo-img-blend: multiply;          /* keeps paper white, darkens lines */
+    --topo-tint: #213B2E;                /* forest pine */
+    --topo-tint-blend: lighten;          /* tints darks toward pine */
+  }
+
+  /* Onyx — pure page-bg backing, very faint lifted-brass lines.
+     Tint uses DARKEN (min per channel) instead of multiply so the near-black
+     base stays exactly #0A0B0D — brass only "wins" on the white line pixels. */
+  body.onyx-theme {
+    --topo-img-filter: invert(1) contrast(1.8) brightness(1.1);
+    --topo-img-blend: lighten;
+    --topo-tint: #E8CD7A;
+    --topo-tint-blend: darken;
+  }
+
+  /* Slate — pure deep-teal backing, light jade lines */
+  body.slate-theme {
+    --topo-img-filter: invert(1) contrast(1.8) brightness(1.1);
+    --topo-img-blend: lighten;
+    --topo-tint: #8BE8D5;
+    --topo-tint-blend: darken;
+  }
+
+  /* Ensure all section content sits above the parallax bg */
+  .site-header, .hero, section.block, .site-footer, hr.divider, .toast {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Footer keeps a tinted surface so address is legible */
+  .site-footer { background: color-mix(in srgb, var(--surface-alt) 92%, transparent); }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  p { color: var(--text-muted); }
+
+  a { color: inherit; text-decoration: none; }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+  }
+
+  /* ── Header ── */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    background-color: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  /* NGC logo: always render in the same color as the title text.
+     Source PNG is black on transparent. In Sand the text is near-black so the
+     logo stays as-is (no filter). In Onyx/Slate we invert + tune brightness
+     and saturation so the off-black becomes the off-white text tone. */
+  img.ngc-logo {
+    display: inline-block;
+    width: auto;
+    height: 32px;
+    filter: var(--logo-filter);
+    transition: filter 0.4s ease;
+    user-select: none;
+  }
+  :root            { --logo-filter: none; }
+  body.onyx-theme  { --logo-filter: invert(1) sepia(0.12) saturate(0.45) brightness(0.93); }
+  body.slate-theme { --logo-filter: invert(1) saturate(0.28) brightness(0.92); }
+
+  .brand-text h1 {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .brand-text span {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-top: 2px;
+  }
+
+  nav.primary-nav {
+    display: flex;
+    gap: 28px;
+  }
+
+  nav.primary-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition);
+  }
+  nav.primary-nav a:hover {
+    color: var(--text);
+    border-bottom-color: var(--primary);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;   /* pushes ONLY theme/menu controls right; nav stays next to brand */
+  }
+
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    padding: 0;
+  }
+  .theme-toggle:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-soft);
+  }
+  .theme-toggle svg { width: 16px; height: 16px; display: none; }
+  body:not(.onyx-theme):not(.slate-theme) .theme-toggle .icon-sand { display: block; }
+  body.onyx-theme .theme-toggle .icon-onyx  { display: block; }
+  body.slate-theme .theme-toggle .icon-slate { display: block; }
+
+  .hamburger { display: none; background: transparent; border: 1px solid var(--border); width: 34px; height: 34px; border-radius: var(--radius-sm); cursor: pointer; padding: 0; align-items: center; justify-content: center; color: var(--text-muted); }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 32px 80px;
+    overflow: hidden;
+  }
+
+  /* Hero no longer needs its own bg — the site-wide parallax topo carries through */
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: 720px;
+  }
+
+  .hero-mark img.ngc-logo {
+    height: 180px;
+    opacity: 0.92;
+  }
+
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 500;
+    line-height: 1.05;
+    color: var(--text);
+  }
+
+  /* "Company" emphasis: heavier weight + tracked-out caps treatment on its own line,
+     framed by hairline rules. No italic, no color shift. */
+  .hero-emphasis {
+    display: inline-block;
+    position: relative;
+    font-weight: 700;
+    letter-spacing: 0.015em;
+    padding: 0 0.15em;
+  }
+  .hero-emphasis::before,
+  .hero-emphasis::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 0.9em;
+    height: 1px;
+    background: var(--text);
+    opacity: 0.35;
+  }
+  .hero-emphasis::before { right: 100%; margin-right: 0.4em; }
+  .hero-emphasis::after  { left: 100%; margin-left: 0.4em; }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 1;
+  }
+  .scroll-cue::after {
+    content: '';
+    width: 1px;
+    height: 36px;
+    background: var(--border);
+    display: block;
+    animation: scrollPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(0.4); transform-origin: top; opacity: 0.4; }
+    50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  }
+
+  /* ── Section frame ── */
+  section.block {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 120px 32px;
+    position: relative;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--primary);
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 620px;
+  }
+
+  /* Two column split */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .split.reverse { direction: rtl; }
+  .split.reverse > * { direction: ltr; }
+
+  .visual-frame {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+  .visual-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+  .visual-frame:hover img { transform: scale(1.02); }
+
+  .visual-frame .corner-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  body.onyx-theme .visual-frame .corner-tag,
+  body.slate-theme .visual-frame .corner-tag { color: var(--surface); }
+
+  /* CTA links */
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  /* Default CTA: SOLID (filled primary) — the "What We Do" style.
+     Use everywhere except where .outline is applied. */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 12px 20px;
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  body.onyx-theme .cta,
+  body.slate-theme .cta { color: var(--surface); }
+  .cta:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+
+  /* .outline — outlined variant. Used in the Golf Course Design section only.
+     In Sand (light) mode keeps the original outlined look; in dark themes
+     it becomes solid (matches the rest of the site so buttons remain prominent). */
+  .cta.outline {
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+  }
+  .cta.outline:hover {
+    background: var(--primary);
+    color: var(--bg);
+    box-shadow: var(--shadow-md);
+  }
+  body.onyx-theme .cta.outline,
+  body.slate-theme .cta.outline {
+    background: var(--primary);
+    color: var(--surface);
+    box-shadow: var(--shadow-md);
+  }
+  body.onyx-theme .cta.outline:hover,
+  body.slate-theme .cta.outline:hover {
+    background: var(--primary-hover);
+    color: var(--surface);
+  }
+
+  .cta::after { content: '→'; transition: transform 0.2s ease; }
+  .cta:hover::after { transform: translateX(3px); }
+
+  /* Services list */
+  .services-wrap {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .services-list {
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+  .services-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+  .services-list li:hover { background: var(--surface-alt); padding-left: 14px; }
+  .services-list .num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-subtle);
+    letter-spacing: 0.1em;
+    min-width: 28px;
+  }
+  .services-list .name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* Team — Principal (featured) + Associate (subordinate) hierarchy */
+
+  /* Principal: large featured block */
+  .principal-block {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) 1.4fr;
+    gap: 64px;
+    align-items: center;
+    margin-top: 56px;
+  }
+
+  .principal-portrait {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    overflow: hidden;
+  }
+  .principal-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.5s ease;
+  }
+  .principal-portrait:hover img { transform: scale(1.02); }
+
+  .principal-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 5px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    z-index: 2;
+  }
+  body.onyx-theme .principal-tag,
+  body.slate-theme .principal-tag { color: var(--surface); }
+
+  .principal-role {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .principal-name {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+
+  .principal-creds {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .principal-bio p {
+    margin-bottom: 14px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  /* Associate divider */
+  .associates-heading {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 88px 0 32px;
+  }
+  .associates-heading .label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .associates-heading .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Associate: compact secondary card */
+  .associate-card {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 32px;
+    align-items: start;
+    max-width: 880px;
+  }
+
+  .associate-portrait {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    overflow: hidden;
+  }
+  .associate-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.5s ease;
+  }
+  .associate-portrait:hover img { transform: scale(1.02); }
+
+  .associate-role {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .associate-name {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .associate-bio p {
+    margin-bottom: 10px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  /* Project cards */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 40px;
+  }
+  .project-card {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    display: block;
+    transition: var(--transition);
+  }
+  .project-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .project-card.has-image { background: #1a1a1a; }
+  .project-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+    opacity: 0.92;
+  }
+  .project-card:hover .project-card-bg { transform: scale(1.04); }
+  .project-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 55%, transparent 100%);
+  }
+  .project-card-num {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.6);
+  }
+  .project-card.no-image .project-card-num { color: var(--text-muted); }
+  .project-card-tag {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 2px 6px;
+    text-transform: uppercase;
+  }
+  .project-card.no-image .project-card-tag {
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  .project-card-footer {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 14px 16px;
+  }
+  /* Title row: project name on the left, course-logo container on the right */
+  .project-card-footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+  .project-card-footer-row .project-card-name {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+  /* Logo floats freely on the card — no frame, no background fill */
+  .project-card-logo {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
+    border: none;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .project-card-name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1.15;
+    margin-bottom: 2px;
+  }
+  .project-card.no-image .project-card-name { color: var(--text); }
+  .project-card-location {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .project-card.no-image .project-card-location { color: var(--text-subtle); }
+
+  /* Contact */
+  .contact-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .contact-info p { margin-bottom: 10px; }
+  .contact-info .address {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .contact-info .city {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-form label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: var(--transition);
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--primary);
+    background: var(--surface);
+  }
+  .contact-form textarea { resize: vertical; min-height: 110px; }
+  .contact-form button {
+    align-self: flex-start;
+    background: var(--primary);
+    color: var(--bg);
+    border: none;
+    padding: 11px 22px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  body.onyx-theme .contact-form button,
+  body.slate-theme .contact-form button { color: var(--surface); }
+  .contact-form button:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+  /* Footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 56px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    background: var(--surface-alt);
+  }
+  .site-footer img.ngc-logo {
+    height: 120px;
+    opacity: 0.88;
+  }
+  .site-footer .name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .site-footer .city {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* Section divider */
+  hr.divider {
+    border: 0;
+    height: 1px;
+    background: var(--border);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--primary);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  body.onyx-theme .toast,
+  body.slate-theme .toast { color: var(--surface); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .site-header { padding: 0 18px; }
+    nav.primary-nav {
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      flex-direction: column;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      gap: 18px;
+      transform: translateY(-110%);
+      transition: transform 0.3s ease;
+      box-shadow: var(--shadow-md);
+    }
+    nav.primary-nav.open { transform: translateY(0); }
+    .hamburger { display: inline-flex; }
+    .brand-text span { display: none; }
+
+    section.block { padding: 80px 22px; }
+    .split, .services-wrap, .contact-block { grid-template-columns: 1fr; gap: 40px; }
+    .split.reverse { direction: ltr; }
+
+    .principal-block { grid-template-columns: 1fr; gap: 32px; }
+    .principal-portrait { max-width: 320px; margin: 0 auto; }
+    .associate-card { grid-template-columns: 1fr; gap: 24px; }
+    .associate-portrait { max-width: 200px; }
+    .associates-heading { margin: 56px 0 24px; }
+    .project-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
+    .project-grid { grid-template-columns: 1fr; }
+    .hero { padding: 110px 18px 80px; }
+    .hero-mark img.ngc-logo { height: 140px; }
+    .site-footer img.ngc-logo { height: 96px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-bg" id="siteBg">
+  <div class="site-bg-base"></div>
+  <div class="site-bg-img"></div>
+  <div class="site-bg-tint"></div>
+</div>
+
+<header class="site-header">
+  <a class="brand" onclick="scrollToId('top')">
+    <img class="ngc-logo" src="images/NGC_Logo.png" alt="NGC">
+    <div class="brand-text">
+      <h1>The Northeast Golf Co.</h1>
+      <span>Saunderstown · RI</span>
+    </div>
+  </a>
+  <nav class="primary-nav" id="primaryNav">
+    <a onclick="scrollToId('what-we-do')">What We Do</a>
+    <a onclick="scrollToId('design')">Design</a>
+    <a onclick="scrollToId('management')">Management</a>
+    <a onclick="scrollToId('team')">Team</a>
+    <a onclick="scrollToId('projects')">Projects</a>
+    <a onclick="scrollToId('contact')">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand → Onyx → Slate">
+      <svg class="icon-sand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-onyx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
+      <svg class="icon-slate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-mark">
+      <img class="ngc-logo" src="images/NGC_Logo.png" alt="The Northeast Golf Company">
+    </div>
+    <h1>The Northeast Golf<br><span class="hero-emphasis">Company</span></h1>
+    <div class="hero-sub">Golf Course Architecture · Operations Management</div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<hr class="divider">
+
+<!-- WHAT WE DO -->
+<section class="block" id="what-we-do">
+  <div class="split">
+    <div class="visual-frame">
+      <span class="corner-tag">F.001 · Renovation</span>
+      <img src="projects/mendham/assets/Mendham_6.jpg" alt="Mendham Golf &amp; Tennis">
+    </div>
+    <div>
+      <span class="section-eyebrow">What We Do</span>
+      <h2 class="section-title">Two branches of one studio.</h2>
+      <p class="lede">The Northeast Golf Company offers Comprehensive Golf Course Design and Operations Management services. From award-winning restorations to full-service agronomic programming and business analytics, we help clubs find the hidden value within their landscape while fostering unique community cultures.</p>
+      <div class="cta-row">
+        <a class="cta outline" onclick="scrollToId('design')">Golf Course Design</a>
+        <a class="cta outline" onclick="scrollToId('management')">Operations Management</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DESIGN -->
+<section class="block" id="design">
+  <div class="split reverse">
+    <div class="visual-frame">
+      <span class="corner-tag">F.002 · Master Plan</span>
+      <img src="images/Image_Fairmount_01.jpg" alt="Haverhill Render">
+    </div>
+    <div>
+      <span class="section-eyebrow">Golf Course Design</span>
+      <h2 class="section-title">Design rooted in the site.</h2>
+      <p class="lede">We provide comprehensive design services for new construction, renovation, and restoration projects. We enjoy exceptional properties and have become adept at embracing the challenges of difficult sites. We listen, take objectives seriously, and let the work follow from an inherent understanding of the land.</p>
+      <div class="cta-row">
+        <a class="cta outline">Master Plans</a>
+        <a class="cta outline">Renderings</a>
+        <a class="cta outline">Finished Construction</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES LIST -->
+<section class="block" id="services">
+  <div class="services-wrap">
+    <div>
+      <span class="section-eyebrow">Capabilities</span>
+      <h2 class="section-title">Design Services</h2>
+      <p class="lede">Each engagement is shaped by what the land, and the club, actually need.</p>
+    </div>
+    <ol class="services-list">
+      <li><span class="num">01</span><span class="name">New Golf Course Design</span></li>
+      <li><span class="num">02</span><span class="name">Renovation of Existing Courses</span></li>
+      <li><span class="num">03</span><span class="name">Restoration of Classic Designs</span></li>
+      <li><span class="num">04</span><span class="name">Comprehensive Enhancement Planning</span></li>
+      <li><span class="num">05</span><span class="name">Golf Community Planning</span></li>
+      <li><span class="num">06</span><span class="name">Unique Golf Amenity Designs</span></li>
+      <li><span class="num">07</span><span class="name">Practice Facility Design</span></li>
+      <li><span class="num">08</span><span class="name">Clubhouse Circulation Planning</span></li>
+    </ol>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MANAGEMENT -->
+<section class="block" id="management">
+  <div class="split">
+    <div class="visual-frame">
+      <span class="corner-tag">F.003 · Operations</span>
+      <img src="images/Image_Bristol_Clubhouse.jpg" alt="Bristol Clubhouse">
+    </div>
+    <div>
+      <span class="section-eyebrow">Operations Management</span>
+      <h2 class="section-title">Daily stewardship of every property.</h2>
+      <p class="lede">NGC Golf Operations Management serves clubs, owners, municipalities, and financial institutions. We bring a seasoned team to day-to-day management, staffing and training, agronomic care, and food and beverage. Over fifty years of combined experience, focused on conditioning and the player experience.</p>
+      <p class="lede" style="margin-top:16px;">Our work is local. We staff into the community, for those that will serve the community, building course-by-course "community cultures" that outlast any single project.</p>
+      <div class="cta-row">
+        <a class="cta" href="https://www.metlinksgolf.com/" target="_blank">Met Links</a>
+        <a class="cta" href="https://kingscrossinggolfclub.com/" target="_blank">Kings Crossing</a>
+        <a class="cta" href="https://bristolgolfpark.com/" target="_blank">Bristol Golf Park</a>
+        <a class="cta" href="https://orchardsgc.com/" target="_blank">The Orchards</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TEAM -->
+<section class="block" id="team">
+  <span class="section-eyebrow">The Team</span>
+  <h2 class="section-title">Led by a principal who stays on the project.</h2>
+
+  <!-- PRINCIPAL: featured -->
+  <div class="principal-block">
+    <div class="principal-portrait">
+      <span class="principal-tag">Principal · Founder</span>
+      <img src="images/Portrait_Robert.webp" alt="Robert McNeil">
+    </div>
+    <div>
+      <span class="principal-role">Principal Architect &amp; Founder</span>
+      <h3 class="principal-name">Robert McNeil</h3>
+      <div class="principal-creds">ASGCA · 30+ Years Practice · Saunderstown, RI</div>
+      <div class="principal-bio">
+        <p>My time is committed to your project. The work ethic and service commitment brought to each project is the foundation of our success. I have been finding, studying, designing, building, and maintaining golf holes since I was a young boy.</p>
+        <p>Our award-winning work at The Preserve at Boulder Hills, Mohegan Sun Golf Club, and Rockleigh Golf Course defines our fascination with variety, history, and strategic thought. As your partner, we work diligently to ensure efficient collaboration, staying on-site continuously during construction.</p>
+        <a class="cta" style="margin-top:6px;" href="team/robert.html">More about Robert</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSOCIATES: supporting team -->
+  <div class="associates-heading">
+    <span class="label">Supporting Studio</span>
+    <span class="line"></span>
+  </div>
+
+  <div class="associate-card">
+    <div class="associate-portrait">
+      <img src="images/Portrait_Trey.webp" alt="Trey Jensen">
+    </div>
+    <div>
+      <span class="associate-role">Associate · Research &amp; Design Support</span>
+      <h4 class="associate-name">Trey Jensen</h4>
+      <div class="associate-bio">
+        <p>Trey joined the studio in 2021, after completing his bachelor's degree at Brigham Young University. He is currently completing graduate work at Penn State in Landscape Architecture and Law, and in 2023 was named a Wadsworth Scholar by the ASGCA.</p>
+        <p>He supports Robert across the practice, contributing historic research, 3D visualization, in-field construction observation, and public engagement materials.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section class="block" id="projects">
+  <span class="section-eyebrow">Selected Work</span>
+  <h2 class="section-title">Projects</h2>
+  <p class="lede">A representative selection. Select to learn more.</p>
+
+  <div class="project-grid">
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Bass%20Rocks%20Golf%20Club&amp;location=Gloucester%20%C2%B7%20MA&amp;num=1">
+      <div class="project-card-bg" style="background-image: url('card_bass%20rocks.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">01</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Bass Rocks Golf Club</div><div class="project-card-logo" style="background-image: url('projects/bass-rocks/logo_bass rocks.png')"></div></div>
+        <div class="project-card-location">Gloucester · MA</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Bellevue%20Golf%20Club&amp;location=In%20Progress&amp;num=2">
+      <div class="project-card-bg" style="background-image: url('card_bellevue.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">02</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Bellevue Golf Club</div><div class="project-card-logo" style="background-image: url('projects/bellevue/logo_bellevue.png')"></div></div>
+        <div class="project-card-location">In Progress</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Bergen%20County%20Courses&amp;location=Bergen%20County%20%C2%B7%20NJ&amp;num=3">
+      <div class="project-card-bg" style="background-image: url('card_valleybrook.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">03</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Bergen County
+</div><div class="project-card-logo" style="background-image: url('projects/bergen-county/logo_bergen county.png')"></div></div>
+        <div class="project-card-location">Bergen County · NJ</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Burlington%20Country%20Club&amp;location=In%20Progress&amp;num=4">
+      <div class="project-card-bg" style="background-image: url('card_burlington.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">04</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Burlington Country Club</div><div class="project-card-logo"></div></div>
+        <div class="project-card-location">In Progress</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Fairmount%20Country%20Club&amp;location=In%20Progress&amp;num=5">
+      <div class="project-card-bg" style="background-image: url('card_fairmount.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">05</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Fairmount Country Club</div><div class="project-card-logo" style="background-image: url('projects/fairmount/logo_fairmount.png')"></div></div>
+        <div class="project-card-location">In Progress</div>
+      </div>
+    </a>
+    <!-- Fall River Country Club — temporarily hidden. Re-enable by removing the surrounding comment tags.
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Fall%20River%20Country%20Club&amp;location=Fall%20River%20%C2%B7%20MA&amp;num=0">
+      <div class="project-card-bg" style="background-image: url('card_fall%20river.PNG')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">00</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Fall River Country Club</div><div class="project-card-logo" style="background-image: url('projects/fall-river/logo_fall river.png'); background-position: left; background-size: contain"></div></div>
+        <div class="project-card-location">Fall River · MA</div>
+      </div>
+    </a>
+    -->
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Haverhill%20Country%20Club&amp;location=Haverhill%20%C2%B7%20MA&amp;num=6">
+      <div class="project-card-bg" style="background-image: url('images/Image_Haverhill_Render02.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">06</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Haverhill Country Club</div><div class="project-card-logo" style="background-image: url('projects/haverhill/logo_haverhill_white.png')"></div></div>
+        <div class="project-card-location">Haverhill · MA</div>
+      </div>
+    </a>
+    <a class="project-card no-image" href="projects/coming-soon.html?name=Kernwood%20Country%20Club&amp;location=In%20Progress&amp;num=7">
+      <span class="project-card-num">07</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Kernwood Country Club</div><div class="project-card-logo"></div></div>
+        <div class="project-card-location">In Progress</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Madison%20Golf%20Club&amp;location=Madison%20%C2%B7%20NJ&amp;num=8">
+      <div class="project-card-bg" style="background-image: url('card_madison.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">08</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Madison Golf Club</div><div class="project-card-logo"></div></div>
+        <div class="project-card-location">Madison · NJ</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/mendham/index.html">
+      <div class="project-card-bg" style="background-image: url('projects/mendham/assets/Mendham_1.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">09</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Mendham Golf &amp; Tennis</div><div class="project-card-logo" style="background-image: url('projects/mendham/logo_mendham.png')"></div></div>
+        <div class="project-card-location">Mendham · NJ</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Met%20Links&amp;location=Staten%20Island%20%C2%B7%20NY&amp;num=10">
+      <div class="project-card-bg" style="background-image: url('images/Met_Links_Image_After%20(1).jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">10</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Met Links</div><div class="project-card-logo"></div></div>
+        <div class="project-card-location">Staten Island · NY</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Milton%20Hoosic%20Club&amp;location=In%20Progress&amp;num=11">
+      <div class="project-card-bg" style="background-image: url('card_milton%20hoosic.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">11</span>
+      <span class="project-card-tag">Renovation</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Milton Hoosic Club</div><div class="project-card-logo"></div></div>
+        <div class="project-card-location">In Progress</div>
+      </div>
+    </a>
+    <a class="project-card has-image" href="projects/coming-soon.html?name=Owl%27s%20Nest%20%E2%80%93%20Vineyard%20Course&amp;location=Thornton%20%C2%B7%20NH&amp;num=12">
+      <div class="project-card-bg" style="background-image: url('card_vineyard.jpg')"></div>
+      <div class="project-card-overlay"></div>
+      <span class="project-card-num">12</span>
+      <span class="project-card-tag">New Course</span>
+      <div class="project-card-footer">
+        <div class="project-card-footer-row"><div class="project-card-name">Owl's Nest, Vineyard Course</div><div class="project-card-logo"></div></div>
+        <div class="project-card-location">Thornton · NH</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section class="block" id="contact">
+  <div class="contact-block">
+    <div class="contact-info">
+      <span class="section-eyebrow">Contact</span>
+      <h2 class="section-title">Begin a conversation.</h2>
+      <p class="lede" style="margin-bottom: 28px;">If you have a property, a project, or simply a question, we'd like to hear from you.</p>
+      <div class="address">The Northeast Golf Company</div>
+      <div class="city">Saunderstown · Rhode Island</div>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault(); showToast('Message sent. We will reach out shortly.');">
+      <div>
+        <label for="cf-name">Name</label>
+        <input id="cf-name" type="text" placeholder="Your name" required="">
+      </div>
+      <div>
+        <label for="cf-email">Email</label>
+        <input id="cf-email" type="email" placeholder="you@example.com" required="">
+      </div>
+      <div>
+        <label for="cf-msg">Message</label>
+        <textarea id="cf-msg" placeholder="Tell us about your project or club..." rows="5"></textarea>
+      </div>
+      <button type="submit">Send Message →</button>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <img class="ngc-logo" src="images/NGC_Logo.png" alt="NGC">
+  <div class="name">The Northeast Golf Company</div>
+  <div class="city">Saunderstown · Rhode Island</div>
+</footer>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+  // Theme cycling
+  const THEMES = ['sand', 'onyx', 'slate'];
+  const THEME_KEY = 'ngc_theme';
+  const THEME_LABELS = { sand: 'Sand mode', onyx: 'Onyx mode', slate: 'Slate mode' };
+  function applyTheme(t) {
+    if (!THEMES.includes(t)) t = 'slate';
+    document.body.classList.remove('sand-theme', 'onyx-theme', 'slate-theme');
+    if (t !== 'sand') document.body.classList.add(t + '-theme');
+  }
+  function currentTheme() {
+    if (document.body.classList.contains('onyx-theme')) return 'onyx';
+    if (document.body.classList.contains('slate-theme')) return 'slate';
+    return 'sand';
+  }
+  function cycleTheme() {
+    const i = THEMES.indexOf(currentTheme());
+    const next = THEMES[(i + 1) % THEMES.length];
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    showToast(THEME_LABELS[next]);
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) || 'slate');
+
+  // Nav
+  function toggleNav() {
+    document.getElementById('primaryNav').classList.toggle('open');
+  }
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const offset = id === 'top' ? 0 : 56;
+    window.scrollTo({ top: el.offsetTop - offset, behavior: 'smooth' });
+    document.getElementById('primaryNav').classList.remove('open');
+  }
+
+  // Parallax topo — the bg layer stays pinned to the viewport (always full view);
+  // only the background-position drifts slightly with scroll for the parallax feel.
+  const siteBgImg = document.querySelector('.site-bg-img');
+  let parallaxTicking = false;
+  // Range the visible "window" pans through as the page scrolls.
+  // 30% → 70% means we shift +/- 20% of the image height across the whole scroll.
+  const POS_START = 30;
+  const POS_END = 70;
+  function updateParallax() {
+    if (!siteBgImg) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+    const pct = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+    const posY = POS_START + pct * (POS_END - POS_START);
+    siteBgImg.style.backgroundPosition = `center ${posY.toFixed(2)}%`;
+    parallaxTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!parallaxTicking) {
+      requestAnimationFrame(updateParallax);
+      parallaxTicking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateParallax, { passive: true });
+  updateParallax();
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+
+
+
+</body></html>

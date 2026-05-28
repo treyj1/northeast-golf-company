@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mendham Golf &amp; Tennis | The Northeast Golf Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-alt: #F4F1E9;
+    --border: #E3DDD0;
+    --border-light: #ECE8DE;
+    --text: #141A16;
+    --text-muted: #636C66;
+    --text-subtle: #8A9189;
+    --primary: #213B2E;
+    --primary-hover: #14251D;
+    --primary-soft: rgba(33, 59, 46, 0.05);
+    --accent-gold: #9E7D4C;
+    --accent-blue: #3E5A6B;
+    --accent-red: #B94A4A;
+    --shadow-sm: 0 1px 2px rgba(20,26,22,0.04);
+    --shadow-md: 0 4px 12px rgba(20,26,22,0.05);
+    --shadow-lg: 0 12px 32px rgba(20,26,22,0.08);
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+    --transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  body.onyx-theme {
+    --bg: #0A0B0D;
+    --surface: #141619;
+    --surface-alt: #1A1D21;
+    --border: #24272C;
+    --border-light: #1B1E22;
+    --text: #EDE8DC;
+    --text-muted: #8B8579;
+    --text-subtle: #5F5A50;
+    --primary: #C9A961;
+    --primary-hover: #B49449;
+    --primary-soft: rgba(201,169,97,0.07);
+    --accent-gold: #D4B574;
+    --accent-blue: #6B91A8;
+    --accent-red: #C45A5A;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+  }
+  body.slate-theme {
+    --bg: #064D44;
+    --surface: #0E1210;
+    --surface-alt: #131815;
+    --border: #1E2521;
+    --border-light: #161D1A;
+    --text: #E5ECE7;
+    --text-muted: #839288;
+    --text-subtle: #5C6862;
+    --primary: #0F9B8E;
+    --primary-hover: #09766B;
+    --primary-soft: rgba(15,155,142,0.08);
+    --accent-gold: #FFB400;
+    --accent-blue: #1E88E5;
+    --accent-red: #E53935;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  /* ── Site-wide parallax topo background ── */
+  :root            { --topo-opacity: 0.30; }
+  body.onyx-theme  { --topo-opacity: 0.12; }
+  body.slate-theme { --topo-opacity: 0.28; }
+  .site-bg {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0; pointer-events: none;
+    opacity: var(--topo-opacity);
+    isolation: isolate;
+    transition: opacity 0.5s ease;
+  }
+  .site-bg-base { position: absolute; inset: 0; background-color: var(--bg); transition: background-color 0.4s ease; }
+  .site-bg-img {
+    position: absolute; inset: 0;
+    background-image: url('../../images/Topo_Whitinsville.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    filter: var(--topo-img-filter);
+    mix-blend-mode: var(--topo-img-blend);
+    transition: filter 0.5s ease;
+  }
+  .site-bg-tint {
+    position: absolute; inset: 0;
+    background-color: var(--topo-tint);
+    mix-blend-mode: var(--topo-tint-blend);
+    transition: background-color 0.5s ease;
+  }
+  :root {
+    --topo-img-filter: contrast(1.6) brightness(1.05);
+    --topo-img-blend: multiply;
+    --topo-tint: #213B2E;
+    --topo-tint-blend: lighten;
+  }
+  body.onyx-theme {
+    --topo-img-filter: invert(1) contrast(1.8) brightness(1.1);
+    --topo-img-blend: lighten;
+    --topo-tint: #E8CD7A;
+    --topo-tint-blend: darken;
+  }
+  body.slate-theme {
+    --topo-img-filter: invert(1) contrast(1.8) brightness(1.1);
+    --topo-img-blend: lighten;
+    --topo-tint: #8BE8D5;
+    --topo-tint-blend: darken;
+  }
+  .site-header, .project-hero, section.block, .site-footer, hr.divider, .toast {
+    position: relative;
+    z-index: 1;
+  }
+  .site-footer { background: color-mix(in srgb, var(--surface-alt) 92%, transparent); }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  p { color: var(--text-muted); }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Header ── */
+  .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 64px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    background-color: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  img.ngc-logo {
+    display: inline-block; width: auto; height: 32px;
+    filter: var(--logo-filter);
+    transition: filter 0.4s ease;
+    user-select: none;
+  }
+  :root            { --logo-filter: none; }
+  body.onyx-theme  { --logo-filter: invert(1) sepia(0.12) saturate(0.45) brightness(0.93); }
+  body.slate-theme { --logo-filter: invert(1) saturate(0.28) brightness(0.92); }
+
+  .brand-text h1 {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .brand-text span {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-top: 2px;
+  }
+  nav.primary-nav { display: flex; gap: 28px; }
+  nav.primary-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition);
+  }
+  nav.primary-nav a:hover { color: var(--text); border-bottom-color: var(--primary); }
+
+  .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    padding: 0;
+  }
+  .theme-toggle:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+  .theme-toggle svg { width: 16px; height: 16px; display: none; }
+  body:not(.onyx-theme):not(.slate-theme) .theme-toggle .icon-sand { display: block; }
+  body.onyx-theme .theme-toggle .icon-onyx  { display: block; }
+  body.slate-theme .theme-toggle .icon-slate { display: block; }
+
+  /* ── PROJECT HERO ── */
+  .project-hero {
+    position: relative;
+    min-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 120px 32px 56px;
+    overflow: hidden;
+    color: #fff;
+  }
+  .project-hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .project-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+  }
+  .project-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 26px;
+    transition: var(--transition);
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .back-link:hover { color: #fff; border-bottom-color: rgba(255,255,255,0.6); }
+  .project-hero .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 14px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.55);
+  }
+  .project-hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.6rem, 6.5vw, 5rem);
+    font-weight: 500;
+    line-height: 1.02;
+    color: #fff;
+    margin-bottom: 18px;
+    max-width: 980px;
+  }
+  .project-hero .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: baseline;
+    margin-top: 8px;
+  }
+  .project-hero .meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.78);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .project-hero .meta strong {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  /* ── Section frame ── */
+  section.block {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 96px 32px;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--primary);
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.6vw, 2.8rem);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .lede {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  hr.divider {
+    border: 0; height: 1px;
+    background: var(--border);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ── Overview: two columns ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .overview-body p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+
+  /* ── Fact card panel ── */
+  .fact-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 24px 26px;
+    box-shadow: var(--shadow-sm);
+  }
+  .fact-panel-title {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    font-weight: 700;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .fact {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 18px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+    align-items: baseline;
+  }
+  .fact:last-child { border-bottom: none; }
+  .fact-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-subtle);
+    font-weight: 700;
+  }
+  .fact-value {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .fact-value.mono {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Scope list ── */
+  .scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .scope-list {
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+  .scope-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+  .scope-list li:hover { background: var(--surface-alt); padding-left: 14px; }
+  .scope-list .num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-subtle);
+    letter-spacing: 0.1em;
+    min-width: 28px;
+  }
+  .scope-list .name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+  .scope-list .desc {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    max-width: 380px;
+  }
+
+  /* ── Gallery ── */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 8px;
+    margin-top: 32px;
+  }
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    aspect-ratio: 4 / 3;
+    background: var(--surface-alt);
+  }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .gallery-item:hover img { transform: scale(1.03); }
+  .gallery-item.wide   { grid-column: span 8; }
+  .gallery-item.narrow { grid-column: span 4; }
+  .gallery-item.half   { grid-column: span 6; }
+  .gallery-item-cap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 14px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    pointer-events: none;
+  }
+  .gallery-item-cap strong { color: var(--accent-gold); font-weight: 700; }
+  body.onyx-theme .gallery-item-cap strong { color: #FFB400; }
+
+  /* ── Before / After comparison ── */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .compare-frame {
+    position: relative;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: var(--surface-alt);
+  }
+  .compare-frame img { width: 100%; height: 100%; object-fit: cover; }
+  .compare-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  body.onyx-theme .compare-tag, body.slate-theme .compare-tag { color: var(--surface); }
+  .compare-tag.before { background: var(--text-muted); }
+  .compare-label {
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+  .hole-header {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 6px;
+  }
+  .hole-num {
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .hole-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .hole-block {
+    margin-bottom: 56px;
+  }
+  .hole-block:last-child { margin-bottom: 0; }
+  .hole-desc {
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+    max-width: 720px;
+  }
+
+  /* ── CTA banner ── */
+  .cta-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 56px 48px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .cta-banner h2 { margin-bottom: 14px; }
+  .cta-banner p { margin: 0 auto 28px; max-width: 540px; }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 12px 20px;
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  body.onyx-theme .cta, body.slate-theme .cta { color: var(--surface); }
+  .cta:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+  .cta::after { content: '→'; transition: transform 0.2s ease; }
+  .cta:hover::after { transform: translateX(3px); }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 56px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .site-footer img.ngc-logo { height: 120px; opacity: 0.88; }
+  .site-footer .name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .site-footer .city {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--primary);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  body.onyx-theme .toast, body.slate-theme .toast { color: var(--surface); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Side back button (fixed left rail) ── */
+  .side-back {
+    position: fixed;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+    z-index: 50;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .side-back:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-50%) translateX(2px);
+    box-shadow: var(--shadow-md);
+  }
+  .side-back-arrow { font-size: 0.9rem; line-height: 1; }
+  @media (max-width: 1100px) { .side-back { display: none; } }
+
+  /* ── Before/After slider ── */
+  .ba-slider {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    user-select: none;
+    cursor: ew-resize;
+    aspect-ratio: 16 / 10;
+    touch-action: none;
+  }
+  .ba-slider img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+  .ba-before { clip-path: inset(0 50% 0 0); will-change: clip-path; }
+  .ba-handle {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.18);
+    z-index: 3;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-1px);
+    will-change: left;
+  }
+  .ba-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.32);
+  }
+  .ba-handle-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    color: var(--primary);
+    pointer-events: none;
+  }
+  .ba-tag {
+    position: absolute;
+    top: 14px;
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #fff;
+    background: rgba(0,0,0,0.65);
+    z-index: 4;
+    pointer-events: none;
+  }
+  .ba-tag-before { left: 14px; }
+  .ba-tag-after  { right: 14px; }
+  .ba-caption {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  /* Single-frame variant used where a true "before" image is unavailable */
+  .single-frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    aspect-ratio: 16 / 10;
+  }
+  .single-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .single-frame .compare-tag {
+    position: absolute; top: 0; left: 0;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  body.onyx-theme .single-frame .compare-tag,
+  body.slate-theme .single-frame .compare-tag { color: var(--surface); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .site-header { padding: 0 18px; gap: 16px; }
+    nav.primary-nav { display: none; }
+    section.block { padding: 64px 22px; }
+    .overview-grid, .scope-grid { grid-template-columns: 1fr; gap: 36px; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item.wide, .gallery-item.narrow, .gallery-item.half { grid-column: span 1; }
+    .compare-row { grid-template-columns: 1fr; }
+    .project-hero { padding: 110px 22px 48px; min-height: 64vh; }
+    .cta-banner { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-bg" id="siteBg">
+  <div class="site-bg-base"></div>
+  <div class="site-bg-img"></div>
+  <div class="site-bg-tint"></div>
+</div>
+
+<a class="side-back" href="../../index.html#projects">
+  <span class="side-back-arrow">←</span>
+  <span>All Projects</span>
+</a>
+
+<header class="site-header">
+  <a class="brand" href="../../index.html">
+    <img class="ngc-logo" src="../../images/NGC_Logo.png" alt="NGC">
+    <div class="brand-text">
+      <h1>The Northeast Golf Co.</h1>
+      <span>Saunderstown · RI</span>
+    </div>
+  </a>
+  <nav class="primary-nav">
+    <a href="../../index.html#what-we-do">What We Do</a>
+    <a href="../../index.html#design">Design</a>
+    <a href="../../index.html#management">Management</a>
+    <a href="../../index.html#team">Team</a>
+    <a href="../../index.html#projects">Projects</a>
+    <a href="../../index.html#contact">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand → Onyx → Slate">
+      <svg class="icon-sand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-onyx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
+      <svg class="icon-slate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="project-hero">
+  <img class="project-hero-image" src="assets/Mendham_1.jpg" alt="Mendham Golf &amp; Tennis Club">
+  <div class="project-hero-overlay"></div>
+  <div class="project-hero-inner">
+    <h1>Mendham Golf &amp; Tennis Club</h1>
+    <div class="meta-row">
+      <div class="meta"><strong>Location</strong> Mendham, New Jersey</div>
+      <div class="meta"><strong>Holes</strong> 18</div>
+      <div class="meta"><strong>Status</strong> Master plan adopted</div>
+      <div class="meta"><strong>Architect</strong> Robert McNeil, ASGCA</div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="block">
+  <div class="overview-grid">
+    <div>
+      <span class="section-eyebrow">Overview</span>
+      <h2 class="section-title">Elevating a classic New Jersey course.</h2>
+      <div class="overview-body">
+        <p>Mendham Golf &amp; Tennis Club is  in northern New Jersey, set on rolling terrain at the foot of the Morristown highlands. The course has long traded on its routing and quiet character, but decades of incremental tree growth, drainage band-aids, and bunker drift had softened the original strategic intent.</p>
+        <p>The Northeast Golf Company was engaged to author a comprehensive master plan: a single, sequenced document the club can execute over a multi-year horizon. The work is grounded in the existing routing — no holes are moved — but every green complex, bunker, and corridor has been revisited.</p>
+        <p>The plan was developed in close partnership with the club's Green Committee and superintendent, with field walks to understand how the property actually plays and maintains.</p>
+      </div>
+    </div>
+    <aside class="fact-panel">
+      <div class="fact-panel-title">Project Facts</div>
+      <div class="fact"><div class="fact-label">Service</div><div class="fact-value">Master Plan &amp; Renovation</div></div>
+      <div class="fact"><div class="fact-label">Engaged</div><div class="fact-value mono">2020</div></div>
+      <div class="fact"><div class="fact-label">Plan adopted</div><div class="fact-value mono">2020</div></div>
+      <div class="fact"><div class="fact-label">Construction</div><div class="fact-value mono">Phased · 2023 – 2025</div></div>
+      <div class="fact"><div class="fact-label">Holes touched</div><div class="fact-value">All 18</div></div>
+      <div class="fact"><div class="fact-label">Heritage era</div><div class="fact-value">Early 20th-century</div></div>
+    </aside>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SCOPE -->
+<section class="block">
+  <div class="scope-grid">
+    <div>
+      <span class="section-eyebrow">Scope of work</span>
+      <h2 class="section-title">A coordinated set of moves.</h2>
+      <p class="lede">The plan was shaped around six work streams. Each could be sequenced independently so the club could phase capital across budgets without compromising the playing experience.</p>
+    </div>
+    <ol class="scope-list">
+      <li>
+        <span class="num">01</span>
+        <span class="name">Green-complexes</span>
+        <span class="desc">Recapture lost surface area, reintroduce intended hole locations, refine surrounds for firmness and recovery.</span>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <span class="name">Bunker re-engineering</span>
+        <span class="desc">Re-shape, re-line, and re-position bunkers for visual scale and strategic relevance. New drainage throughout.</span>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <span class="name">Fairway expansion</span>
+        <span class="desc">Restore lost width on holes to re-introduce angles and reward the more thoughtful tee shot.</span>
+      </li>
+      <li>
+        <span class="num">04</span>
+        <span class="name">Tree management plan</span>
+        <span class="desc">Selective removal and canopy lifting, prioritizing turf health, sightlines, and air movement to greens.</span>
+      </li>
+      <li>
+        <span class="num">05</span>
+        <span class="name">Practice facilities</span>
+        <span class="desc">Completed prior to the current master plan, The Links at Mendham provides short game practice opportunities to members with unending variety.</span>
+      </li>
+      <li>
+        <span class="num">06</span>
+        <span class="name">Drainage &amp; irrigation</span>
+        <span class="desc">Targeted surface and sub-surface drainage on the most problematic corridors. </span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BEFORE / AFTER -->
+<section class="block">
+  <span class="section-eyebrow">Selected before &amp; after</span>
+  <h2 class="section-title">Holes 15 and 16</h2>
+  <p class="lede">Below are two examples of completed work as part of the master plan process.</p>
+
+  <div class="hole-block">
+    <div class="hole-header">
+      <span class="hole-num">15</span>
+      <span class="hole-title">Par 4</span>
+    </div>
+    <p class="hole-desc">The work surrounding the 15th green largely involved redesigned bunkering to both add to the aesthetics and drama of the approach, as well as create more variety around the green.</p>
+    <div class="ba-slider" aria-label="Hole 15 before and after">
+      <img class="ba-after" src="assets/Mendham_15_After.jpg" alt="Hole 15 after renovation">
+      <img class="ba-before" src="assets/Mendham_15_Before.jpg" alt="Hole 15 before renovation">
+      <span class="ba-tag ba-tag-before">Before</span>
+      <span class="ba-tag ba-tag-after">After</span>
+      <div class="ba-handle"><svg class="ba-handle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 3 12 9 18"></polyline><polyline points="15 6 21 12 15 18"></polyline></svg></div>
+    </div>
+    <div class="ba-caption">Existing — Spring 2023 · Completed — Fall 2024</div>
+  </div>
+
+  <div class="hole-block">
+    <div class="hole-header">
+      <span class="hole-num">16</span>
+      <span class="hole-title">Par 4</span>
+    </div>
+    <p class="hole-desc">This short par 4 was surrounded by bunkers and a slope to a water hazard, limiting variety in recovery shots around the green. Repositioned bunkers with expanded pitch areas reintroduce short game variety and provide a more open visual on the approach.</p>
+    <div class="ba-slider" aria-label="Hole 16 before and after">
+      <img class="ba-after" src="assets/Mendham_16_After.jpg" alt="Hole 16 after renovation">
+      <img class="ba-before" src="assets/Mendham_16_Before.jpg" alt="Hole 16 before renovation">
+      <span class="ba-tag ba-tag-before">Before</span>
+      <span class="ba-tag ba-tag-after">After</span>
+      <div class="ba-handle"><svg class="ba-handle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 3 12 9 18"></polyline><polyline points="15 6 21 12 15 18"></polyline></svg></div>
+    </div>
+    <div class="ba-caption">Existing — Spring 2023 · Completed — Fall 2024</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- HOLE 10 FEATURE -->
+<section class="block">
+  <span class="section-eyebrow">Most Recent Project</span>
+  <h2 class="section-title">Hole 10 · the par-5, reimagined.</h2>
+  <p class="lede">One of the final pieces of the master plan involved renovating the par 5 tenth hole. The hole had become long and repetitive to members through fairway narrowing, bunker shrinkage, and tree growth. The renovation plan involved removing trees for turf health and strategic angles, reorganized bunkering to provide greater risk-reward options into the green, and expanded fairway for increased lay-up options. </p>
+
+  <a class="hole-feature" href="hole-10.html" style="display:grid; grid-template-columns: 1.4fr 1fr; gap: 8px; margin-top: 36px; border: 1px solid var(--border); background: var(--surface); overflow: hidden; transition: var(--transition); box-shadow: var(--shadow-sm); cursor: pointer;">
+    <div style="position: relative; overflow: hidden; min-height: 360px; background: #1a1a1a;">
+      <img src="assets/hole-10/render-04-green-fescue.jpg" alt="Hole 10 rendering" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+      <span style="position: absolute; top: 0; left: 0; background: var(--primary); color: var(--bg); padding: 5px 14px; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; z-index: 2;">Hole 10 · Par 5</span>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: space-between; padding: 32px 30px;">
+      <div>
+        <span style="font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.18em;">June 2025 · Enhancement plan</span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.7rem; font-weight: 500; line-height: 1.15; margin: 12px 0 14px; color: var(--text);">Hole 10 Improvement Plan</h3>
+        <p style="font-size: 0.95rem; line-height: 1.65; color: var(--text-muted);">Focused on aesthetics, agronomy, and strategy. Click here to read more about the plan.</p>
+      </div>
+      <span style="margin-top: 24px; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--primary); display: inline-flex; align-items: center; gap: 8px;">Read the plan →</span>
+    </div>
+  </a>
+</section>
+<style>
+  .hole-feature:hover { border-color: var(--primary) !important; box-shadow: var(--shadow-md) !important; transform: translateY(-1px); }
+  .hole-feature:hover img { transform: scale(1.03); }
+  @media (max-width: 900px) {
+    .hole-feature { grid-template-columns: 1fr !important; }
+    .hole-feature > div:first-child { min-height: 260px !important; }
+  }
+</style>
+
+<hr class="divider">
+
+<!-- GALLERY (moved to end) -->
+<section class="block">
+  <span class="section-eyebrow">Gallery</span>
+  <h2 class="section-title">Photographs from the property.</h2>
+  <p class="lede">A handful of frames showcasing the completed work at Mendham Golf &amp; Tennis.</p>
+
+  <div class="gallery-grid" style="grid-auto-flow: dense">
+    <div class="gallery-item wide" style="grid-row: span 2; aspect-ratio: auto">
+      <img src="assets/Mendham_6.jpg" alt="Wide view of Mendham course" style="object-fit: cover; width: 100%; height: 100%">
+    </div>
+    <div class="gallery-item half">
+      <img src="assets/Mendham_15_After.jpg" alt="Mendham 15 finished work" style="object-fit: cover; width: 100%; height: 100%">
+    </div><div class="gallery-item half">
+      <img src="../../images/Mendham_2 (2).jpg" alt="" style="object-fit: cover; width: 100%; height: 100%">
+    </div><div class="gallery-item narrow">
+      <img src="assets/Mendham_1.jpg" alt="Mendham hole detail" style="object-fit: cover; width: 100%; height: 100%">
+    </div><div class="gallery-item narrow">
+      <img src="../../images/Mendham_2 (1).jpg" alt="" style="object-fit: cover; width: 100%; height: 100%">
+    </div>
+    
+    
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section class="block">
+  <div class="cta-banner">
+    <span class="section-eyebrow">Work with us</span>
+    <h2>Considering a master plan for your club?</h2>
+    <p>We work with private clubs, municipalities, and ownership groups on phased, financially-realistic renovation plans. We'd be happy to walk your property.</p>
+    <a class="cta" href="../../index.html#contact">Begin a conversation</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <img class="ngc-logo" src="../../images/NGC_Logo.png" alt="NGC">
+  <div class="name">The Northeast Golf Company</div>
+  <div class="city">Saunderstown · Rhode Island</div>
+</footer>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+  // Theme cycling — synced with index.html via shared localStorage key
+  const THEMES = ['sand', 'onyx', 'slate'];
+  const THEME_KEY = 'ngc_theme';
+  const THEME_LABELS = { sand: 'Sand mode', onyx: 'Onyx mode', slate: 'Slate mode' };
+  function applyTheme(t) {
+    if (!THEMES.includes(t)) t = 'slate';
+    document.body.classList.remove('sand-theme', 'onyx-theme', 'slate-theme');
+    if (t !== 'sand') document.body.classList.add(t + '-theme');
+  }
+  function currentTheme() {
+    if (document.body.classList.contains('onyx-theme')) return 'onyx';
+    if (document.body.classList.contains('slate-theme')) return 'slate';
+    return 'sand';
+  }
+  function cycleTheme() {
+    const i = THEMES.indexOf(currentTheme());
+    const next = THEMES[(i + 1) % THEMES.length];
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    showToast(THEME_LABELS[next]);
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) || 'slate');
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  // Before/After sliders
+  function initBASliders() {
+    document.querySelectorAll('.ba-slider').forEach(slider => {
+      if (slider.dataset.baInit) return;
+      slider.dataset.baInit = '1';
+      const before = slider.querySelector('.ba-before');
+      const handle = slider.querySelector('.ba-handle');
+      let dragging = false;
+      function setPct(pct) {
+        pct = Math.max(0, Math.min(100, pct));
+        before.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+        handle.style.left = pct + '%';
+      }
+      function pctFromEvent(e) {
+        const rect = slider.getBoundingClientRect();
+        const x = (e.clientX !== undefined ? e.clientX : e.touches[0].clientX) - rect.left;
+        return (x / rect.width) * 100;
+      }
+      slider.addEventListener('pointerdown', e => {
+        dragging = true;
+        try { slider.setPointerCapture(e.pointerId); } catch (err) {}
+        setPct(pctFromEvent(e));
+      });
+      slider.addEventListener('pointermove', e => { if (dragging) setPct(pctFromEvent(e)); });
+      slider.addEventListener('pointerup',     () => dragging = false);
+      slider.addEventListener('pointercancel', () => dragging = false);
+      slider.addEventListener('pointerleave',  () => dragging = false);
+    });
+  }
+  initBASliders();
+
+  // Parallax topo background
+  const siteBgImg = document.querySelector('.site-bg-img');
+  let parallaxTicking = false;
+  const POS_START = 30, POS_END = 70;
+  function updateParallax() {
+    if (!siteBgImg) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+    const pct = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+    const posY = POS_START + pct * (POS_END - POS_START);
+    siteBgImg.style.backgroundPosition = `center ${posY.toFixed(2)}%`;
+    parallaxTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!parallaxTicking) { requestAnimationFrame(updateParallax); parallaxTicking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', updateParallax, { passive: true });
+  updateParallax();
+</script>
+
+
+
+</body></html>

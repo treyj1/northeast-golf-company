@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mendham · Hole 10 Enhancements | The Northeast Golf Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FAF8F5;
+    --surface: #FFFFFF;
+    --surface-alt: #F4F1E9;
+    --border: #E3DDD0;
+    --border-light: #ECE8DE;
+    --text: #141A16;
+    --text-muted: #636C66;
+    --text-subtle: #8A9189;
+    --primary: #213B2E;
+    --primary-hover: #14251D;
+    --primary-soft: rgba(33, 59, 46, 0.05);
+    --accent-gold: #9E7D4C;
+    --accent-blue: #3E5A6B;
+    --accent-red: #B94A4A;
+    --shadow-sm: 0 1px 2px rgba(20,26,22,0.04);
+    --shadow-md: 0 4px 12px rgba(20,26,22,0.05);
+    --shadow-lg: 0 12px 32px rgba(20,26,22,0.08);
+    --radius-sm: 2px;
+    --radius-md: 3px;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'Space Mono', 'Courier New', monospace;
+    --transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  body.onyx-theme {
+    --bg: #0A0B0D; --surface: #141619; --surface-alt: #1A1D21;
+    --border: #24272C; --border-light: #1B1E22;
+    --text: #EDE8DC; --text-muted: #8B8579; --text-subtle: #5F5A50;
+    --primary: #C9A961; --primary-hover: #B49449; --primary-soft: rgba(201,169,97,0.07);
+    --accent-gold: #D4B574; --accent-blue: #6B91A8; --accent-red: #C45A5A;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.35);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.7);
+  }
+  body.slate-theme {
+    --bg: #064D44; --surface: #0E1210; --surface-alt: #131815;
+    --border: #1E2521; --border-light: #161D1A;
+    --text: #E5ECE7; --text-muted: #839288; --text-subtle: #5C6862;
+    --primary: #0F9B8E; --primary-hover: #09766B; --primary-soft: rgba(15,155,142,0.08);
+    --accent-gold: #FFB400; --accent-blue: #1E88E5; --accent-red: #E53935;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  /* ── Site-wide parallax topo ── */
+  :root            { --topo-opacity: 0.30; }
+  body.onyx-theme  { --topo-opacity: 0.12; }
+  body.slate-theme { --topo-opacity: 0.28; }
+  .site-bg {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0; pointer-events: none;
+    opacity: var(--topo-opacity);
+    isolation: isolate;
+    transition: opacity 0.5s ease;
+  }
+  .site-bg-base { position: absolute; inset: 0; background-color: var(--bg); transition: background-color 0.4s ease; }
+  .site-bg-img {
+    position: absolute; inset: 0;
+    background-image: url('../../images/Topo_Whitinsville.jpg');
+    background-size: cover;
+    background-position: center 50%;
+    filter: var(--topo-img-filter);
+    mix-blend-mode: var(--topo-img-blend);
+    transition: filter 0.5s ease;
+  }
+  .site-bg-tint {
+    position: absolute; inset: 0;
+    background-color: var(--topo-tint);
+    mix-blend-mode: var(--topo-tint-blend);
+    transition: background-color 0.5s ease;
+  }
+  :root            { --topo-img-filter: contrast(1.6) brightness(1.05); --topo-img-blend: multiply; --topo-tint: #213B2E; --topo-tint-blend: lighten; }
+  body.onyx-theme  { --topo-img-filter: invert(1) contrast(1.8) brightness(1.1); --topo-img-blend: lighten; --topo-tint: #E8CD7A; --topo-tint-blend: darken; }
+  body.slate-theme { --topo-img-filter: invert(1) contrast(1.8) brightness(1.1); --topo-img-blend: lighten; --topo-tint: #8BE8D5; --topo-tint-blend: darken; }
+  .site-header, .project-hero, section.block, .site-footer, hr.divider, .toast {
+    position: relative; z-index: 1;
+  }
+  .site-footer { background: color-mix(in srgb, var(--surface-alt) 92%, transparent); }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  p { color: var(--text-muted); }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Header ── */
+  .site-header {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 64px; padding: 0 32px;
+    display: flex; align-items: center; gap: 36px;
+    background-color: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  img.ngc-logo {
+    display: inline-block; width: auto; height: 32px;
+    filter: var(--logo-filter);
+    transition: filter 0.4s ease;
+    user-select: none;
+  }
+  :root            { --logo-filter: none; }
+  body.onyx-theme  { --logo-filter: invert(1) sepia(0.12) saturate(0.45) brightness(0.93); }
+  body.slate-theme { --logo-filter: invert(1) saturate(0.28) brightness(0.92); }
+
+  .brand-text h1 {
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .brand-text span {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    display: block;
+    margin-top: 2px;
+  }
+  nav.primary-nav { display: flex; gap: 28px; }
+  nav.primary-nav a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    padding: 6px 0;
+    border-bottom: 1px solid transparent;
+    transition: var(--transition);
+  }
+  nav.primary-nav a:hover { color: var(--text); border-bottom-color: var(--primary); }
+
+  .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    padding: 0;
+  }
+  .theme-toggle:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+  .theme-toggle svg { width: 16px; height: 16px; display: none; }
+  body:not(.onyx-theme):not(.slate-theme) .theme-toggle .icon-sand { display: block; }
+  body.onyx-theme .theme-toggle .icon-onyx  { display: block; }
+  body.slate-theme .theme-toggle .icon-slate { display: block; }
+
+  /* ── PROJECT HERO ── */
+  .project-hero {
+    position: relative;
+    min-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 120px 32px 56px;
+    overflow: hidden;
+    color: #fff;
+  }
+  .project-hero-image {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .project-hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+  }
+  .project-hero-inner {
+    position: relative; z-index: 2;
+    max-width: 1240px; width: 100%;
+    margin: 0 auto;
+  }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 26px;
+    transition: var(--transition);
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .back-link:hover { color: #fff; border-bottom-color: rgba(255,255,255,0.6); }
+  .project-hero .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 14px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.55);
+  }
+  .project-hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    font-weight: 500;
+    line-height: 1.02;
+    color: #fff;
+    margin-bottom: 18px;
+    max-width: 980px;
+  }
+  .project-hero .meta-row {
+    display: flex; flex-wrap: wrap;
+    gap: 24px;
+    align-items: baseline;
+    margin-top: 8px;
+  }
+  .project-hero .meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.78);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .project-hero .meta strong { color: #fff; font-weight: 700; }
+
+  /* ── Section frame ── */
+  section.block {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 96px 32px;
+  }
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: inline-block;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--primary);
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.6vw, 2.8rem);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  .lede {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 1000;100;10;1;640px;
+  }
+  hr.divider {
+    border: 0; height: 1px;
+    background: var(--border);
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* ── Overview grid ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .overview-body p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  .fact-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 24px 26px;
+    box-shadow: var(--shadow-sm);
+  }
+  .fact-panel-title {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    font-weight: 700;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .fact {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 18px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-light);
+    align-items: baseline;
+  }
+  .fact:last-child { border-bottom: none; }
+  .fact-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-subtle);
+    font-weight: 700;
+  }
+  .fact-value {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .fact-value.mono {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Existing vs Proposed comparison ── */
+  .plan-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 36px;
+  }
+  .plan-frame {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .plan-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+  }
+  .plan-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 5px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+  }
+  body.onyx-theme .plan-tag, body.slate-theme .plan-tag { color: var(--surface); }
+  .plan-tag.muted { background: var(--text-muted); }
+  .plan-caption {
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-light);
+    background: var(--surface-alt);
+  }
+
+  /* ── Changes list ── */
+  .changes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .change-list {
+    list-style: none;
+    border-top: 1px solid var(--border);
+  }
+  .change-list li {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--border-light);
+    align-items: baseline;
+    transition: var(--transition);
+  }
+  .change-list li:hover { background: var(--surface-alt); padding-left: 14px; }
+  .change-list .marker {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+  }
+  .change-list .name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .change-list .desc {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  /* ── Rendering gallery ── */
+  .render-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 8px;
+    margin-top: 36px;
+  }
+  .render-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    aspect-ratio: 3 / 2;
+  }
+  .render-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .render-item:hover img { transform: scale(1.03); }
+  .render-item.wide  { grid-column: span 8; }
+  .render-item.narrow { grid-column: span 4; }
+  .render-item.half  { grid-column: span 6; }
+  .render-item.third { grid-column: span 4; }
+  .render-cap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 12px 14px;
+    background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    pointer-events: none;
+  }
+  .render-cap strong { color: var(--accent-gold); font-weight: 700; }
+  body.onyx-theme .render-cap strong { color: #FFB400; }
+
+  /* ── Three-up themes block ── */
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .theme-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 28px 26px;
+    box-shadow: var(--shadow-sm);
+  }
+  .theme-card-num {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+  }
+  body.onyx-theme .theme-card-num { color: #FFB400; }
+  .theme-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .theme-card p {
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+
+  /* ── CTA banner ── */
+  .cta-banner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 56px 48px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .cta-banner h2 { margin-bottom: 14px; }
+  .cta-banner p { margin: 0 auto 28px; max-width: 540px; }
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    background: var(--primary);
+    color: var(--bg);
+    padding: 12px 20px;
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  body.onyx-theme .cta, body.slate-theme .cta { color: var(--surface); }
+  .cta:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+  }
+  .cta::after { content: '→'; transition: transform 0.2s ease; }
+  .cta:hover::after { transform: translateX(3px); }
+  .cta.outline {
+    background: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+  }
+  .cta.outline:hover { background: var(--primary); color: var(--bg); }
+  body.onyx-theme .cta.outline, body.slate-theme .cta.outline { background: var(--primary); color: var(--surface); }
+
+  /* ── Sketch pullquote ── */
+  .sketch-block {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    align-items: center;
+    margin-top: 24px;
+  }
+  .sketch-frame {
+    position: relative;
+    border: 1px solid var(--border);
+    background: #fff;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    aspect-ratio: 4 / 5;
+  }
+  .sketch-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .sketch-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-top: 10px;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 56px 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .site-footer img.ngc-logo { height: 120px; opacity: 0.88; }
+  .site-footer .name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .site-footer .city {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--primary);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  body.onyx-theme .toast, body.slate-theme .toast { color: var(--surface); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Side back button (fixed left rail) ── */
+  .side-back {
+    position: fixed;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+    z-index: 50;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+  }
+  .side-back:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-50%) translateX(2px);
+    box-shadow: var(--shadow-md);
+  }
+  .side-back-arrow { font-size: 0.9rem; line-height: 1; }
+  @media (max-width: 1100px) { .side-back { display: none; } }
+
+  /* ── Before/After slider ── */
+  .ba-slider {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    user-select: none;
+    cursor: ew-resize;
+    aspect-ratio: 16 / 10;
+    touch-action: none;
+  }
+  .ba-slider.aerial { aspect-ratio: 16 / 9; }
+  .ba-slider img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+  .ba-before { clip-path: inset(0 50% 0 0); will-change: clip-path; }
+  .ba-handle {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.18);
+    z-index: 3;
+    pointer-events: none;
+    left: 50%;
+    transform: translateX(-1px);
+    will-change: left;
+  }
+  .ba-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.32);
+  }
+  .ba-handle-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    color: var(--primary);
+    pointer-events: none;
+  }
+  .ba-tag {
+    position: absolute;
+    top: 14px;
+    padding: 4px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #fff;
+    background: rgba(0,0,0,0.65);
+    z-index: 4;
+    pointer-events: none;
+  }
+  .ba-tag-before { left: 14px; }
+  .ba-tag-after  { right: 14px; }
+  .ba-caption {
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .site-header { padding: 0 18px; gap: 16px; }
+    nav.primary-nav { display: none; }
+    section.block { padding: 64px 22px; }
+    .overview-grid, .changes-grid, .sketch-block { grid-template-columns: 1fr; gap: 36px; }
+    .plan-compare { grid-template-columns: 1fr; }
+    .theme-grid { grid-template-columns: 1fr; gap: 18px; }
+    .render-grid { grid-template-columns: 1fr; }
+    .render-item.wide, .render-item.narrow, .render-item.half, .render-item.third { grid-column: span 1; }
+    .project-hero { padding: 110px 22px 48px; min-height: 64vh; }
+    .cta-banner { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-bg" id="siteBg">
+  <div class="site-bg-base"></div>
+  <div class="site-bg-img"></div>
+  <div class="site-bg-tint"></div>
+</div>
+
+<a class="side-back" href="../../index.html#projects">
+  <span class="side-back-arrow">←</span>
+  <span>All Projects</span>
+</a>
+
+<header class="site-header">
+  <a class="brand" href="../../index.html">
+    <img class="ngc-logo" src="../../images/NGC_Logo.png" alt="NGC">
+    <div class="brand-text">
+      <h1>The Northeast Golf Co.</h1>
+      <span>Saunderstown · RI</span>
+    </div>
+  </a>
+  <nav class="primary-nav">
+    <a href="../../index.html#what-we-do">What We Do</a>
+    <a href="../../index.html#design">Design</a>
+    <a href="../../index.html#management">Management</a>
+    <a href="../../index.html#team">Team</a>
+    <a href="../../index.html#projects">Projects</a>
+    <a href="../../index.html#contact">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand → Onyx → Slate">
+      <svg class="icon-sand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="icon-onyx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
+      <svg class="icon-slate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="project-hero">
+  <img class="project-hero-image" src="assets/hole-10/render-04-green-fescue.jpg" alt="Hole 10 rendering, proposed green complex">
+  <div class="project-hero-overlay"></div>
+  <div class="project-hero-inner">
+    <h1>The 10th, reimagined.</h1>
+    <div class="meta-row">
+      <div class="meta"><strong>Par</strong> 5</div>
+      <div class="meta"><strong>Plan author</strong> Robert McNeil, ASGCA</div>
+      <div class="meta"><strong>Renderings</strong> Trey Jensen, Associate</div>
+      <div class="meta"><strong>Issued</strong> June 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW: 2021 master plan context -->
+<section class="block">
+  <div class="overview-grid">
+    <div>
+      <span class="section-eyebrow">The 2021 master plan</span>
+      <h2 class="section-title">The last major piece of a five-year program.</h2>
+      <div class="overview-body">
+        <p>In 2021, Mendham Golf &amp; Tennis Club adopted the master plan presented by Robert McNeil, ASGCA, of The Northeast Golf Company. Alongside contractors at NMP Golf, McNeil has now completed nearly all of the proposed improvements across the property.</p>
+        <p>Following completion of most of the plan, one major project remained: the 10th. This document, prepared in June 2025, sets the proposed enhancements to the par-5 — improving its aesthetics, strategy, agronomy, and playability so it matches the rest of the renovated course.</p>
+        <p>The plan has been revised several times since 2021. Bunkers have been moved and reduced in size to ease maintenance, to fit the style of work already completed elsewhere on the course, and to maximize the impact of each adjustment on member playability and experience.</p><p>Construction on the 10th is now complete. Below showcases the plan prior to completion, with featured photos coming soon of the finished work.</p>
+      </div>
+    </div>
+    <aside class="fact-panel">
+      <div class="fact-panel-title">Hole 10 Facts</div>
+      <div class="fact"><div class="fact-label">Hole</div><div class="fact-value">10 · Par 5</div></div>
+      <div class="fact"><div class="fact-label">Service</div><div class="fact-value">Enhancement plan</div></div>
+      <div class="fact"><div class="fact-label">Plan dated</div><div class="fact-value mono">June 17, 2025</div></div>
+      <div class="fact"><div class="fact-label">Lead Architect</div><div class="fact-value">R. McNeil, ASGCA</div></div>
+      <div class="fact"><div class="fact-label">Author</div><div class="fact-value">T. Jensen</div></div>
+      <div class="fact"><div class="fact-label">Contractor</div><div class="fact-value">NMP Golf</div></div>
+    </aside>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EXISTING vs PROPOSED AERIALS -->
+<section class="block">
+  <span class="section-eyebrow">Existing &amp; proposed</span>
+  <h2 class="section-title">Side by side, from above.</h2>
+  <p class="lede">The bulk of the work happens within 200 yards of the green. Drag the handle to compare the existing corridor against the proposed sequence of bunkers, expanded short grass, and tall-fescue mounding.</p>
+
+  <div style="margin: 36px auto 0;">
+    <div class="ba-slider aerial" aria-label="Hole 10 aerial before and after">
+      <img class="ba-after" src="assets/hole-10/hole-10-proposed-color.png" alt="Hole 10 proposed aerial">
+      <img class="ba-before" src="assets/hole-10/hole-10-existing-color.png" alt="Hole 10 existing aerial">
+      <span class="ba-tag ba-tag-before">Existing</span>
+      <span class="ba-tag ba-tag-after">Proposed</span>
+      <div class="ba-handle"><svg class="ba-handle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 3 12 9 18"></polyline><polyline points="15 6 21 12 15 18"></polyline></svg></div>
+    </div>
+    <div class="ba-caption">Drag to compare · existing corridor vs proposed plan</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WHAT WILL CHANGE -->
+<section class="block">
+  <div class="changes-grid">
+    <div>
+      <span class="section-eyebrow">What will change</span>
+      <h2 class="section-title">A coordinated set of moves within 200 yards of the green.</h2>
+      <p class="lede">No part of the hole's routing is moved. Every change is focused on the second-shot zone and the green complex — the moments where the par-5 either rewards the bold play or quietly punishes the lazy one.</p>
+    </div>
+    <ol class="change-list">
+      <li>
+        <span class="marker">A</span>
+        <div>
+          <span class="name">Reshape the three fairway bunkers</span>
+          <span class="desc">Reconstruct and reshape the three existing fairway bunkers 75–150 yards from the green so they read at the right scale and play the right angles.</span>
+        </div>
+      </li>
+      <li>
+        <span class="marker">B</span>
+        <div>
+          <span class="name">Selective tree removal (≈10 trees)</span>
+          <span class="desc">Removing approximately ten cramped trees improves turf health and airflow. Incidentally, it opens new strategic lines of play and clearer views into the green.</span>
+        </div>
+      </li>
+      <li>
+        <span class="marker">C</span>
+        <div>
+          <span class="name">New 40-yard cross bunker short of the green</span>
+          <span class="desc">A large new bunker spanning nearly 40 yards begins about 30 yards short of the green — the central decision point of the second shot.</span>
+        </div>
+      </li>
+      <li>
+        <span class="marker">D</span>
+        <div>
+          <span class="name">Fairway expansions, left and right</span>
+          <span class="desc">Wider left fairway to introduce new angles of play, plus an access fairway to the right of the new cross bunker for heroic run-on shots from the right side.</span>
+        </div>
+      </li>
+      <li>
+        <span class="marker">E</span>
+        <div>
+          <span class="name">Reshape the green surrounds</span>
+          <span class="desc">Eliminate the back-left greenside bunker; reshape and slightly reposition the remaining greenside bunkers to match the new fairway angles.</span>
+        </div>
+      </li>
+      <li>
+        <span class="marker">F</span>
+        <div>
+          <span class="name">Continuous short grass to the 11th tee</span>
+          <span class="desc">Tie the existing 11th tee to the 10th green with continuous short grass — a generous pitch area for shots that miss the green long.</span>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONCEPT SKETCH -->
+<section class="block">
+  <div class="sketch-block">
+    <div>
+      <span class="section-eyebrow">Concept sketch</span>
+      <h2 class="section-title">April 2025 · drawn in the field.</h2>
+      <p class="lede">Several revisions preceded the final concept. The sketch at right, drafted by Robert McNeil in April 2025, fixes the bunker positions (B1 / B2 / B3), the three principal lines of play (A, B, C), and the scatter of mounding and hollows that ties the right side of the corridor back to the 11th tee.</p>
+    </div>
+    <div>
+      <div class="sketch-frame">
+        <img src="../../images/hole-10-sketch_cropped.jpg" alt="Hole 10 proposed plan, black and white">
+      </div>
+      <div class="sketch-meta">Proposed plan overlay · for orientation</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- GROUND-LEVEL BEFORE / AFTER -->
+<section class="block">
+  <span class="section-eyebrow">From the fairway</span>
+  <h2 class="section-title">The same view, before and after.</h2>
+  <p class="lede">An photo of the corridor prior to renovations, paired with the proposed rendering from the same vantage. Drag to see the transformation; three bunkers renovated to match the new style and scale, with the introduction of a new bunker short of the green. Tree removal along the right side and introduced fescue areas for greater visual, strategic, and agronomic appeal. </p>
+
+  <div style="margin-top: 36px;">
+    <div class="ba-slider" aria-label="Hole 10 ground-level before and after">
+      <img class="ba-after" src="assets/hole-10/render-02-new-bunker-complex.jpg" alt="Hole 10 proposed rendering">
+      <img class="ba-before" src="assets/hole-10/hole-10-existing-aerial.png" alt="Hole 10 existing condition">
+      <span class="ba-tag ba-tag-before">Existing</span>
+      <span class="ba-tag ba-tag-after">Proposed</span>
+      <div class="ba-handle"><svg class="ba-handle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 3 12 9 18"></polyline><polyline points="15 6 21 12 15 18"></polyline></svg></div>
+    </div>
+    <div class="ba-caption">Drag to compare · existing fairway vs proposed rendering</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RENDERINGS -->
+<section class="block">
+  <span class="section-eyebrow">Concept renderings</span>
+  <h2 class="section-title">The hole as it will play.</h2>
+  <p class="lede">Renderings prepared by Trey Jensen, Associate. They depict the bunker scale, the new cross bunker short of the green, the tall fescue and mounding along the right corridor, and the standout maple — now visible as a centerpiece of the par-5.</p>
+
+  <div class="render-grid">
+    <div class="render-item half">
+      <img src="assets/hole-10/render-01-green-from-fairway.jpg" alt="View of green complex from the fairway">
+      <div class="render-cap"><strong>Plate 01</strong> · Approach from the lay-up zone</div>
+    </div>
+    <div class="render-item half">
+      <img src="assets/hole-10/render-07-aerial-bunkers.jpg" alt="Aerial view of the new bunker complex">
+      <div class="render-cap"><strong>Plate 02</strong> · Aerial · the new bunker chain</div>
+    </div>
+    <div class="render-item third">
+      <img src="assets/hole-10/render-03-greenside-bunkers.jpg" alt="Greenside bunkers, reshaped">
+      <div class="render-cap"><strong>Plate 03</strong> · Reshaped greenside complex</div>
+    </div>
+    <div class="render-item third">
+      <img src="assets/hole-10/render-06-green-side.jpg" alt="Green from the side, with bunkers">
+      <div class="render-cap"><strong>Plate 04</strong> · Green from the right side</div>
+    </div>
+    <div class="render-item third">
+      <img src="assets/hole-10/render-05-maple-tree.jpg" alt="Standalone maple tree on the right">
+      <div class="render-cap"><strong>Plate 05</strong> · The standout maple, exposed</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- THREE THEMES -->
+<section class="block">
+  <span class="section-eyebrow">Why these moves</span>
+  <h2 class="section-title">New visuals, better agronomy, sharper strategy.</h2>
+  <p class="lede">The plan answers three questions at once. The reshaped bunkers and fescue carry the visual style established elsewhere on the course; the tree removal improves turf conditions; and the wider fairway with new short grass makes the par-5 play to its full potential, for every skill level.</p>
+
+  <div class="theme-grid">
+    <div class="theme-card">
+      <span class="theme-card-num">01</span>
+      <h3>New visuals</h3>
+      <p>Reshaped bunkers, a new cross bunker, expanded pitch areas, and tall-fescue mounding tied through to the 11th tee. Hole 10 will stylistically match the recent work elsewhere at Mendham — a more dramatic, visually engaging hole on the flatter section of the property.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-card-num">02</span>
+      <h3>Improved agronomy</h3>
+      <p> Removing the cramped trees on the right improves airflow, reduces fallen leaves, and exposes the existing maple as a true centerpiece of the renovated par-5.</p>
+    </div>
+    <div class="theme-card">
+      <span class="theme-card-num">03</span>
+      <h3>Strategy, challenge, playability</h3>
+      <p>Players able to reach in two now face heightened reward — and a heightened risk in the new sprawling cross bunker. A well-struck shot can use the right run-on fairway; a mis-hit can find disaster in the short fronting bunker. Players laying up choose between the bold angle near the bunkers and the safer left side.</p>
+    </div>
+  </div>
+
+  <p class="lede" style="margin-top:36px;">Around the green, the expanded pitch areas and repositioned greenside bunkers create more mental challenge for highly skilled players, and better access for those who prefer to putt the ball back into play.</p>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section class="block">
+  <div class="cta-banner">
+    <span class="section-eyebrow">In closing</span>
+    <h2>The last hole, brought into line.</h2>
+    <p>Renovations on Hole 10 have recently been completed. Check back for updated photography of the completed work.</p>
+    <div class="cta-row">
+      <a class="cta" href="index.html">Back to project page</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <img class="ngc-logo" src="../../images/NGC_Logo.png" alt="NGC">
+  <div class="name">The Northeast Golf Company</div>
+  <div class="city">Saunderstown · Rhode Island</div>
+</footer>
+
+<div class="toast" id="toast">Saved</div>
+
+<script>
+  // Theme cycling — synced via shared localStorage key
+  const THEMES = ['sand', 'onyx', 'slate'];
+  const THEME_KEY = 'ngc_theme';
+  const THEME_LABELS = { sand: 'Sand mode', onyx: 'Onyx mode', slate: 'Slate mode' };
+  function applyTheme(t) {
+    if (!THEMES.includes(t)) t = 'slate';
+    document.body.classList.remove('sand-theme', 'onyx-theme', 'slate-theme');
+    if (t !== 'sand') document.body.classList.add(t + '-theme');
+  }
+  function currentTheme() {
+    if (document.body.classList.contains('onyx-theme')) return 'onyx';
+    if (document.body.classList.contains('slate-theme')) return 'slate';
+    return 'sand';
+  }
+  function cycleTheme() {
+    const i = THEMES.indexOf(currentTheme());
+    const next = THEMES[(i + 1) % THEMES.length];
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    showToast(THEME_LABELS[next]);
+  }
+  applyTheme(localStorage.getItem(THEME_KEY) || 'slate');
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  // Before/After sliders
+  function initBASliders() {
+    document.querySelectorAll('.ba-slider').forEach(slider => {
+      if (slider.dataset.baInit) return;
+      slider.dataset.baInit = '1';
+      const before = slider.querySelector('.ba-before');
+      const handle = slider.querySelector('.ba-handle');
+      let dragging = false;
+      function setPct(pct) {
+        pct = Math.max(0, Math.min(100, pct));
+        before.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+        handle.style.left = pct + '%';
+      }
+      function pctFromEvent(e) {
+        const rect = slider.getBoundingClientRect();
+        const x = (e.clientX !== undefined ? e.clientX : e.touches[0].clientX) - rect.left;
+        return (x / rect.width) * 100;
+      }
+      slider.addEventListener('pointerdown', e => {
+        dragging = true;
+        try { slider.setPointerCapture(e.pointerId); } catch (err) {}
+        setPct(pctFromEvent(e));
+      });
+      slider.addEventListener('pointermove', e => { if (dragging) setPct(pctFromEvent(e)); });
+      slider.addEventListener('pointerup',     () => dragging = false);
+      slider.addEventListener('pointercancel', () => dragging = false);
+      slider.addEventListener('pointerleave',  () => dragging = false);
+    });
+  }
+  initBASliders();
+
+  // Parallax topo background
+  const siteBgImg = document.querySelector('.site-bg-img');
+  let parallaxTicking = false;
+  const POS_START = 30, POS_END = 70;
+  function updateParallax() {
+    if (!siteBgImg) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const y = window.pageYOffset || document.documentElement.scrollTop;
+    const pct = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+    const posY = POS_START + pct * (POS_END - POS_START);
+    siteBgImg.style.backgroundPosition = `center ${posY.toFixed(2)}%`;
+    parallaxTicking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!parallaxTicking) { requestAnimationFrame(updateParallax); parallaxTicking = true; }
+  }, { passive: true });
+  window.addEventListener('resize', updateParallax, { passive: true });
+  updateParallax();
+</script>
+
+
+
+</body></html>
