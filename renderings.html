@@ -76,7 +76,7 @@
   body.onyx-theme  { --topo-img-filter: invert(1) contrast(1.8) brightness(1.1); --topo-img-blend: lighten; --topo-tint: #E8CD7A; --topo-tint-blend: darken; }
   body.slate-theme { --topo-img-filter: invert(1) contrast(1.8) brightness(1.1); --topo-img-blend: lighten; --topo-tint: #8BE8D5; --topo-tint-blend: darken; }
 
-  .site-header, .gallery-intro, .gallery-grid, .site-footer { position: relative; z-index: 1; }
+  .site-header, .gallery-intro, .renders-wrap, .site-footer { position: relative; z-index: 1; }
 
   .site-header {
     position: fixed; top: 0; left: 0; right: 0;
@@ -105,6 +105,26 @@
   body.slate-theme .theme-toggle .icon-slate { display: block; }
   .hamburger { display: none; }
 
+  .side-back {
+    position: fixed; top: 50%; left: 18px;
+    transform: translateY(-50%);
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    padding: 12px 14px; display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--text-muted); z-index: 50;
+    box-shadow: var(--shadow-sm); transition: var(--transition);
+    text-decoration: none;
+  }
+  .side-back:hover {
+    color: var(--primary); border-color: var(--primary);
+    transform: translateY(-50%) translateX(2px); box-shadow: var(--shadow-md);
+  }
+  .side-back-arrow { font-size: 0.9rem; line-height: 1; }
+  @media (max-width: 1100px) { .side-back { display: none; } }
+
   h1, h2, h3 { font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; color: var(--text); }
   p { color: var(--text-muted); }
   a { color: inherit; text-decoration: none; }
@@ -112,46 +132,93 @@
   .gallery-intro { max-width: 1240px; margin: 0 auto; padding: 140px 32px 60px; }
   .section-eyebrow { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.22em; color: var(--primary); margin-bottom: 14px; display: inline-block; padding-bottom: 6px; border-bottom: 1px solid var(--primary); }
   .section-title { font-family: var(--font-serif); font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 500; margin-bottom: 18px; }
-  .lede { font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; max-width: 720px; }
+  .lede { font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; max-width: 1000;100;10;1;720px; }
 
-  /* Renderings grid */
-  .gallery-grid {
+  /* Project groups */
+  .renders-wrap {
     max-width: 1240px; margin: 0 auto;
-    padding: 20px 32px 100px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    padding: 0 32px 100px;
+    display: flex; flex-direction: column; gap: 72px;
   }
-  .render-card {
+  .render-group-header {
+    display: flex; flex-direction: column; gap: 6px;
+    padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 16px;
+  }
+  .render-group-title {
+    font-family: var(--font-serif); font-size: 1.6rem; font-weight: 500;
+    color: var(--text); margin: 6px 0 0; line-height: 1.1;
+  }
+  .render-group-link {
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--primary);
+    white-space: nowrap; padding-bottom: 2px;
+    border-bottom: 1px solid transparent; transition: var(--transition);
+  }
+  .render-group-link:hover { border-bottom-color: var(--primary); }
+  .render-group-link::after { content: ' →'; display: inline-block; transition: transform 0.2s ease; }
+  .render-group-link:hover::after { transform: translateX(3px); }
+
+  /* Image tile grid */
+  .render-grid {
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px;
+  }
+  .ri {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--border); background: #1a1a1a;
+    aspect-ratio: 16 / 9;
+  }
+  .ri img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block; transition: transform 0.5s ease;
+  }
+  .ri:hover img { transform: scale(1.03); }
+  .c4  { grid-column: span 4; }
+  .c6  { grid-column: span 6; }
+  .c8  { grid-column: span 8; }
+  .c12 { grid-column: span 12; }
+
+  /* Featured card — image on top, text body below */
+  .ri-card {
     display: flex; flex-direction: column;
     border: 1px solid var(--border);
     background: var(--surface);
     overflow: hidden;
     transition: var(--transition);
     box-shadow: var(--shadow-sm);
+    align-self: start;
   }
-  .render-card.full { grid-column: span 2; }
-  .render-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .render-card .frame {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background: #1a1a1a;
+  .ri-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .ri-card .ri-frame {
+    position: relative; aspect-ratio: 16 / 9;
+    overflow: hidden; background: #1a1a1a; display: block;
   }
-  .render-card .frame img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+  .ri-card .ri-frame img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block; transition: transform 0.5s ease;
   }
-  .render-card:hover .frame img { transform: scale(1.04); }
-  .render-card .body { padding: 22px 26px 26px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .render-card .eyebrow { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.18em; }
-  .render-card h2 { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 500; line-height: 1.15; margin: 4px 0 6px; color: var(--text); }
-  .render-card p { font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin: 0; }
-  .render-card .link { margin-top: 12px; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--primary); }
-  .render-card .link::after { content: ' →'; transition: transform 0.2s ease; display: inline-block; }
-  .render-card:hover .link::after { transform: translateX(3px); }
+  .ri-card:hover .ri-frame img { transform: scale(1.04); }
+  .ri-card .ri-body {
+    padding: 22px 26px 26px;
+    display: flex; flex-direction: column; gap: 6px; flex: 1;
+  }
+  .ri-body-eyebrow {
+    font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700;
+    color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.18em;
+  }
+  .ri-body h3 {
+    font-family: var(--font-serif); font-size: 1.35rem; font-weight: 500;
+    line-height: 1.15; margin: 4px 0 6px; color: var(--text);
+  }
+  .ri-body p { font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin: 0; }
+  .ri-body-link {
+    margin-top: 12px;
+    font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--primary);
+  }
+  .ri-body-link::after { content: ' →'; display: inline-block; transition: transform 0.2s ease; }
+  .ri-card:hover .ri-body-link::after { transform: translateX(3px); }
+  /* Plain tiles — don't stretch to match card height */
+  .ri { align-self: start; }
 
   .site-footer { border-top: 1px solid var(--border); padding: 56px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; background: color-mix(in srgb, var(--surface-alt) 92%, transparent); }
   .site-footer img.ngc-logo { height: 96px; opacity: 0.88; }
@@ -167,12 +234,24 @@
     .brand-text span { display: none; }
     .brand-text h1 { font-size: 0.85rem; }
     .gallery-intro { padding: 110px 22px 40px; }
-    .gallery-grid { grid-template-columns: 1fr; padding: 16px 22px 80px; gap: 22px; }
-    .render-card.full { grid-column: span 1; }
+    .renders-wrap { padding: 0 22px 80px; gap: 48px; }
+    .render-grid { grid-template-columns: 1fr 1fr; }
+    .c4, .c6, .c8 { grid-column: span 1; }
+    .c12 { grid-column: span 2; }
+    .render-group-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+  @media (max-width: 600px) {
+    .render-grid { grid-template-columns: 1fr; }
+    .c4, .c6, .c8, .c12 { grid-column: span 1; }
   }
 </style>
 </head>
 <body>
+
+<a class="side-back" href="index.html">
+  <span class="side-back-arrow">←</span>
+  <span>Home</span>
+</a>
 
 <div class="site-bg">
   <div class="site-bg-base"></div>
@@ -214,187 +293,95 @@
   <p class="lede">Renderings are how we test a design before the dozers arrive — and how clients, committees, and members can see a proposal before reading it. A selection from current and recent projects: photorealistic studies, concept plates, and the design sheets that anchored each one in the field.</p>
 </section>
 
-<section class="gallery-grid">
+<div class="renders-wrap">
 
-  <article class="render-card full">
-    <a class="frame" href="projects/bass-rocks/hole-07.html">
-      <img src="projects/bass-rocks/assets/hole-07/render-01.jpg" alt="Bass Rocks Hole 7 rendering">
-    </a>
-    <div class="body">
-      <span class="eyebrow">Bass Rocks · Hole 7</span>
-      <h2>The seventh, reimagined.</h2>
-      <p>A 1990s Wogan par 5 rebuilt around its native rock — new green complex, restyled bunkering, and added length.</p>
-      <a class="link" href="projects/bass-rocks/hole-07.html">View hole</a>
+  <!-- Bass Rocks Golf Club -->
+  <div class="render-group">
+    <div class="render-group-header">
+      <span class="section-eyebrow">Bass Rocks Golf Club · Gloucester, MA</span>
+      <h2 class="render-group-title">Hole 7 · Bass Rocks</h2>
     </div>
-  </article>
+    <div class="render-grid">
+      <div class="ri-card c12">
+        <a class="ri-frame" href="projects/bass-rocks/hole-07.html">
+          <img src="projects/bass-rocks/assets/hole-07/render-01.jpg" alt="Bass Rocks Hole 7">
+        </a>
+        <div class="ri-body">
+          <span class="ri-body-eyebrow">Bass Rocks · Hole 7</span>
+          <h3>The seventh, reimagined.</h3>
+          <p>A 1990s Wogan par 5 rebuilt around native rock with a new green, restyled bunkering, and added length.</p>
+          <a class="ri-body-link" href="projects/bass-rocks/hole-07.html">View hole</a>
+        </div>
+      </div>
+      <div class="ri c6"><img src="projects/bass-rocks/assets/hole-07/render-02.jpg" alt="Bass Rocks Hole 7 approach"></div>
+      <div class="ri c6"><img src="projects/bass-rocks/assets/hole-07/render-03.jpg" alt="Bass Rocks Hole 7 alternate vantage"></div>
+    </div>
+  </div>
 
-  <article class="render-card">
-    <div class="frame">
-      <img src="projects/bass-rocks/assets/hole-07/render-02.jpg" alt="Bass Rocks Hole 7 approach view">
+  <!-- Mendham Golf & Country Club -->
+  <div class="render-group">
+    <div class="render-group-header">
+      <span class="section-eyebrow">Mendham Golf &amp; Country Club · Chester, NJ</span>
+      <h2 class="render-group-title">Hole 10 · Mendham Golf &amp; Tennis</h2>
     </div>
-    <div class="body">
-      <span class="eyebrow">Bass Rocks · Hole 7</span>
-      <h2>Approach view</h2>
-      <p>Concept plate showing the rebuilt approach to the seventh green.</p>
+    <div class="render-grid" style="grid-auto-flow: dense">
+      <div class="ri-card c12 wide" style="grid-row: span 2; aspect-ratio: auto">
+        <a class="ri-frame" href="projects/mendham/hole-10.html">
+          <img src="projects/mendham/assets/hole-10/render-04-green-fescue.jpg" alt="Mendham Hole 10 green and fescue" style="object-fit: cover; width: 100%; height: 100%">
+        </a>
+        <div class="ri-body">
+          <span class="ri-body-eyebrow">Mendham · Hole 10</span>
+          <h3>The tenth, reimagined.</h3>
+          <p>The reimagined par 5 with reshaped bunkers, a new cross bunker, tall-fescue mounding, and expanded short grass through the corridor.</p>
+          <a class="ri-body-link" href="projects/mendham/hole-10.html">View hole</a>
+        </div>
+      </div>
+      <div class="ri c4 narrow"><img src="projects/mendham/assets/hole-10/render-01-green-from-fairway.jpg" alt="Mendham Hole 10 green from fairway" style="object-fit: cover; width: 100%; height: 100%"></div>
+      <div class="ri c4 narrow"><img src="projects/mendham/assets/hole-10/render-06-green-side.jpg" alt="Mendham Hole 10 green from side" style="object-fit: cover; width: 100%; height: 100%"></div><div class="ri c4 half"><img src="projects/mendham/assets/hole-10/render-07-aerial-bunkers.jpg" alt="Mendham Hole 10 aerial bunkers" style="object-fit: cover; width: 100%; height: 100%"></div>
+      
+      <div class="ri c6 half"><img src="projects/mendham/assets/hole-10/render-05-maple-tree.jpg" alt="Mendham Hole 10 maple tree" style="object-fit: cover; width: 100%; height: 100%"></div>
     </div>
-  </article>
+  </div>
 
-  <article class="render-card">
-    <div class="frame">
-      <img src="projects/bass-rocks/assets/hole-07/render-03.jpg" alt="Bass Rocks Hole 7 alternate vantage">
+  <!-- PathTracer Studies -->
+  <div class="render-group">
+    <div class="render-group-header">
+      <span class="section-eyebrow">Haverhill Country Club · Haverhill, MA</span>
+      <h2 class="render-group-title">New Pond at Haverhill</h2>
     </div>
-    <div class="body">
-      <span class="eyebrow">Bass Rocks · Hole 7</span>
-      <h2>Alternate vantage</h2>
-      <p>Looking back across the new green complex, with native rock and reframed bunkering.</p>
+    <div class="render-grid" style="grid-auto-flow: dense">
+      <div class="ri-card c12 wide" style="grid-row: span 2; aspect-ratio: auto">
+        <div class="ri-frame">
+          <img src="images/galleries/renderings/hole-01-tee.jpg" alt="Hole 1 tee study" style="object-fit: cover; width: 100%; height: 100%">
+        </div>
+        <div class="ri-body">
+          <span class="ri-body-eyebrow">Haverhill · New Pond</span>
+          <h3>New Pond between holes 1, 2, and 8</h3>
+          <p>Renderings of a proposed pond behind the first green and to the right of the eighth green. </p>
+        </div>
+      </div><div class="ri c4 narrow"><img src="images/galleries/renderings/hole-08-a.jpg" alt="Hole 8 approach" style="object-fit: cover; width: 100%; height: 100%"></div>
+      <div class="ri c6 narrow"><img src="images/galleries/renderings/hole-02.jpg" alt="Hole 2 green complex" style="object-fit: cover; width: 100%; height: 100%"></div>
+      <div class="ri c4 half"><img src="images/galleries/renderings/hole-08-tee.jpg" alt="Hole 8 from the tee" style="object-fit: cover; width: 100%; height: 100%"></div>
+      
+      <div class="ri c4 half"><img src="images/galleries/renderings/hole-08-b.jpg" alt="Hole 8 alternate vantage" style="object-fit: cover; width: 100%; height: 100%"></div>
     </div>
-  </article>
+  </div>
 
-  <article class="render-card full">
-    <a class="frame" href="projects/mendham/hole-10.html">
-      <img src="projects/mendham/assets/hole-10/render-04-green-fescue.jpg" alt="Mendham Hole 10 green and fescue">
-    </a>
-    <div class="body">
-      <span class="eyebrow">Mendham · Hole 10</span>
-      <h2>The tenth, reimagined.</h2>
-      <p>The proposed par 5: reshaped bunkers, new cross bunker, tall-fescue mounding, and continuous short grass through to the eleventh tee.</p>
-      <a class="link" href="projects/mendham/hole-10.html">View hole</a>
-    </div>
-  </article>
+  <!-- Haverhill Country Club -->
+  <div class="render-group">
+    
+    
+  </div>
 
-  <article class="render-card">
-    <div class="frame">
-      <img src="projects/mendham/assets/hole-10/render-01-green-from-fairway.jpg" alt="Mendham Hole 10 green from fairway">
+  <!-- Fairmount Country Club -->
+  <div class="render-group">
+    
+    <div class="render-grid">
+      
     </div>
-    <div class="body">
-      <span class="eyebrow">Mendham · Hole 10</span>
-      <h2>Green from the fairway</h2>
-      <p>Approach study from the lay-up zone, with the reshaped bunkering visible at scale.</p>
-    </div>
-  </article>
+  </div>
 
-  <article class="render-card">
-    <div class="frame">
-      <img src="projects/mendham/assets/hole-10/render-07-aerial-bunkers.jpg" alt="Mendham Hole 10 aerial">
-    </div>
-    <div class="body">
-      <span class="eyebrow">Mendham · Hole 10</span>
-      <h2>The new bunker chain, aerial</h2>
-      <p>The proposed sequence of fairway and cross bunkers as it sits on the corridor.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="projects/mendham/assets/hole-10/render-06-green-side.jpg" alt="Mendham Hole 10 green from side">
-    </div>
-    <div class="body">
-      <span class="eyebrow">Mendham · Hole 10</span>
-      <h2>Green from the right side</h2>
-      <p>Reshaped greenside bunkering and surround contour.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="projects/mendham/assets/hole-10/render-05-maple-tree.jpg" alt="Mendham Hole 10 maple tree">
-    </div>
-    <div class="body">
-      <span class="eyebrow">Mendham · Hole 10</span>
-      <h2>The standout maple</h2>
-      <p>The existing maple exposed as a centerpiece, after selective tree removal along the right corridor.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/galleries/renderings/hole-01-tee.jpg" alt="Hole 1 tee study">
-    </div>
-    <div class="body">
-      <span class="eyebrow">PathTracer study</span>
-      <h2>Hole 1 · from the tee</h2>
-      <p>Photorealistic concept study exploring tee-shot framing and tree management on a coastal par 4.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/galleries/renderings/hole-02.jpg" alt="Hole 2 study">
-    </div>
-    <div class="body">
-      <span class="eyebrow">PathTracer study</span>
-      <h2>Hole 2 · green complex</h2>
-      <p>Concept study of green-side bunkering and surrounding short-grass surrounds.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/galleries/renderings/hole-08-tee.jpg" alt="Hole 8 tee">
-    </div>
-    <div class="body">
-      <span class="eyebrow">PathTracer study</span>
-      <h2>Hole 8 · from the tee</h2>
-      <p>Tee-shot study with the proposed corridor width and lay-up options.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/galleries/renderings/hole-08-a.jpg" alt="Hole 8 view a">
-    </div>
-    <div class="body">
-      <span class="eyebrow">PathTracer study</span>
-      <h2>Hole 8 · approach</h2>
-      <p>Approach study with proposed framing and bunkering at scale.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/galleries/renderings/hole-08-b.jpg" alt="Hole 8 view b">
-    </div>
-    <div class="body">
-      <span class="eyebrow">PathTracer study</span>
-      <h2>Hole 8 · alternate vantage</h2>
-      <p>A second approach study showing the green complex from the right side.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/Image_Haverhill_Render01.jpg" alt="Haverhill rendering 1">
-    </div>
-    <div class="body">
-      <span class="eyebrow">Haverhill Country Club</span>
-      <h2>Master plan rendering</h2>
-      <p>Proposed framing and corridor work, drawn in the spirit of the property.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/Image_Haverhill_Render02.jpg" alt="Haverhill rendering 2">
-    </div>
-    <div class="body">
-      <span class="eyebrow">Haverhill Country Club</span>
-      <h2>Alternate vantage</h2>
-      <p>A second view of the proposed work in context.</p>
-    </div>
-  </article>
-
-  <article class="render-card">
-    <div class="frame">
-      <img src="images/Image_Fairmount_01.jpg" alt="Fairmount rendering">
-    </div>
-    <div class="body">
-      <span class="eyebrow">Fairmount Country Club</span>
-      <h2>Master plan rendering</h2>
-      <p>Concept rendering produced alongside the master plan documentation.</p>
-    </div>
-  </article>
-
-</section>
+</div>
 
 <footer class="site-footer">
   <img class="ngc-logo" src="images/NGC_Logo.png" alt="NGC">
@@ -428,5 +415,6 @@
     if (nav) nav.classList.toggle('open');
   }
 </script>
+
 
 </body></html>
