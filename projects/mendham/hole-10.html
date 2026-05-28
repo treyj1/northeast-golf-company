@@ -171,7 +171,7 @@
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    width: 34px; height: 34px;
+    width: 40px; height: 40px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     display: inline-flex; align-items: center; justify-content: center;
@@ -183,6 +183,20 @@
   body:not(.onyx-theme):not(.slate-theme) .theme-toggle .icon-sand { display: block; }
   body.onyx-theme .theme-toggle .icon-onyx  { display: block; }
   body.slate-theme .theme-toggle .icon-slate { display: block; }
+  .hamburger {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border);
+    width: 40px; height: 40px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    transition: var(--transition);
+  }
+  .hamburger:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
 
   /* ── PROJECT HERO ── */
   .project-hero {
@@ -767,7 +781,24 @@
   /* ── Responsive ── */
   @media (max-width: 900px) {
     .site-header { padding: 0 18px; gap: 16px; }
-    nav.primary-nav { display: none; }
+    nav.primary-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      flex-direction: column;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 22px;
+      gap: 4px;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+      box-shadow: var(--shadow-md);
+      z-index: 90;
+    }
+    nav.primary-nav a { padding: 12px 0; font-size: 0.75rem; }
+    nav.primary-nav.open { transform: translateY(0); }
+    .hamburger { display: inline-flex; }
+    .brand-text span { display: none; }
+    .brand-text h1 { font-size: 0.85rem; }
     section.block { padding: 64px 22px; }
     .overview-grid, .changes-grid, .sketch-block { grid-template-columns: 1fr; gap: 36px; }
     .plan-compare { grid-template-columns: 1fr; }
@@ -800,7 +831,7 @@
       <span>Saunderstown · RI</span>
     </div>
   </a>
-  <nav class="primary-nav">
+  <nav class="primary-nav" id="primaryNav">
     <a href="../../index.html#what-we-do">What We Do</a>
     <a href="../../index.html#design">Design</a>
     <a href="../../index.html#management">Management</a>
@@ -809,10 +840,13 @@
     <a href="../../index.html#contact">Contact</a>
   </nav>
   <div class="header-actions">
-    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand → Onyx → Slate">
+    <button class="theme-toggle" onclick="cycleTheme()" title="Cycle theme: Sand, Onyx, Slate">
       <svg class="icon-sand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
       <svg class="icon-onyx" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M11 3 8 9l4 12 4-12-3-6"></path><path d="M2 9h20"></path></svg>
       <svg class="icon-slate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
     </button>
   </div>
 </header>
@@ -1078,6 +1112,11 @@
     showToast(THEME_LABELS[next]);
   }
   applyTheme(localStorage.getItem(THEME_KEY) || 'slate');
+
+  function toggleNav() {
+    const nav = document.getElementById('primaryNav');
+    if (nav) nav.classList.toggle('open');
+  }
 
   // Toast
   let toastTimer;
