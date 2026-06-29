@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Madison Golf Club — Backyard Renovation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #064D44;
+    --surface:      #0E1210;
+    --surface-alt:  #131815;
+    --border:       #1E2521;
+    --text:         #E5ECE7;
+    --text-muted:   #839288;
+    --text-subtle:  #5C6862;
+    --primary:      #0F9B8E;
+    --shadow-lg:    0 12px 40px rgba(0,0,0,0.5);
+    --font-sans:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif:   'Cormorant Garamond', Georgia, serif;
+    --font-mono:    'Space Mono', 'Courier New', monospace;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--surface);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Header ── */
+  .bar {
+    width: 100%;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .bar-left { display: flex; flex-direction: column; gap: 4px; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--primary);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--primary);
+    display: inline-block;
+  }
+  .bar h1 {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+  .hint {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    text-align: right;
+    line-height: 1.8;
+  }
+  .hint b { color: var(--text-muted); font-weight: 700; }
+
+  /* ── Viewer ── */
+  .viewer-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 28px;
+    min-height: 0;
+  }
+  .viewer {
+    position: relative;
+    width: min(100%, calc((100vh - 160px) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    user-select: none;
+    touch-action: none;
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Two image layers */
+  .layer {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: block;
+    object-fit: cover;
+    -webkit-user-drag: none;
+    pointer-events: none;
+  }
+  #imgAfter  { z-index: 1; }
+  #imgBefore { z-index: 2; } /* opacity set by JS based on scroll progress */
+
+  /* Corner tags — opacity driven by JS alongside the image fade */
+  .tag {
+    position: absolute; top: 0; z-index: 3;
+    padding: 5px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    background: var(--primary); color: var(--surface);
+    pointer-events: none;
+  }
+  .tag.before { left: 0; }
+  .tag.after  { right: 0; }
+
+  /* Time badge */
+  .time-badge {
+    position: absolute; bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    font-family: var(--font-mono);
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.65);
+    background: rgba(0,0,0,0.45);
+    padding: 3px 9px;
+    pointer-events: none;
+  }
+
+  /* Loading overlay */
+  .loading {
+    position: absolute; inset: 0; z-index: 10;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px;
+    background: var(--surface);
+  }
+  .loading.hide { display: none; }
+  .load-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--text-subtle);
+  }
+  .load-bar-wrap {
+    width: 200px; height: 2px;
+    background: var(--border);
+  }
+  .load-bar {
+    height: 100%; width: 0%;
+    background: var(--primary);
+    transition: width 0.1s linear;
+  }
+
+  /* ── Footer ── */
+  .foot {
+    width: 100%;
+    padding: 10px 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem; text-transform: uppercase;
+    letter-spacing: 0.16em; color: var(--text-subtle);
+    white-space: nowrap;
+  }
+  .label b { color: var(--text-muted); font-weight: 700; }
+  .scrub-bar {
+    flex: 1; height: 2px;
+    background: var(--border);
+    margin: 0 20px;
+    cursor: pointer;
+  }
+  .scrub-fill { height: 100%; width: 0%; background: var(--primary); }
+
+  /* ── POI Dots ── */
+  .poi-layer {
+    position: absolute; inset: 0; z-index: 5;
+    pointer-events: none;
+  }
+  .poi-dot {
+    position: absolute;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  .poi-inner {
+    position: relative;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,180,0,0.92);
+    border: 2px solid rgba(255,255,255,0.8);
+    color: #0a0a0a;
+    font-family: var(--font-mono);
+    font-size: 0.65rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  /* Two halo rings that explode outward */
+  .poi-inner::before, .poi-inner::after {
+    content: '';
+    position: absolute;
+    inset: -2px; border-radius: 50%;
+    border: 1.5px solid rgba(255,180,0,0.75);
+    animation: halo-ring 2.4s ease-out infinite;
+    pointer-events: none;
+  }
+  .poi-inner::after { animation-delay: 1.2s; }
+  @keyframes halo-ring {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    100% { transform: scale(2.8); opacity: 0;   }
+  }
+
+  /* Tooltip — shows above dot by default */
+  .poi-tooltip {
+    position: absolute;
+    bottom: calc(100% + 13px);
+    left: 50%; transform: translateX(-50%);
+    width: 210px;
+    background: rgba(14,18,16,0.97);
+    border: 1px solid var(--border);
+    padding: 12px 14px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+  /* Diamond arrow at bottom of tooltip */
+  .poi-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 9px; height: 9px;
+    background: rgba(14,18,16,0.97);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .poi-dot:hover .poi-tooltip { opacity: 1; }
+
+  /* Flip below when dot is in upper region */
+  .poi-dot.tip-below .poi-tooltip {
+    bottom: auto; top: calc(100% + 13px);
+  }
+  .poi-dot.tip-below .poi-tooltip::after {
+    bottom: auto; top: -5px;
+    border-right: none; border-bottom: none;
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  /* Right-align tooltip when dot is near right edge */
+  .poi-dot.tip-right .poi-tooltip {
+    left: auto; right: 0; transform: none;
+  }
+  .poi-dot.tip-right .poi-tooltip::after {
+    left: auto; right: 12px; transform: rotate(45deg);
+  }
+
+  .poi-tip-num {
+    font-family: var(--font-mono);
+    font-size: 0.5rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.2em;
+    color: #FFB400; margin-bottom: 5px; display: block;
+  }
+  .poi-title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem; font-weight: 500;
+    color: var(--text); margin-bottom: 6px; line-height: 1.2;
+  }
+  .poi-body {
+    font-size: 0.72rem; line-height: 1.6; color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-left">
+    <span class="eyebrow">Selected Work · Madison Golf Club</span>
+    <h1>Backyard Renovation</h1>
+  </div>
+  <div class="hint">
+    <b>Scroll</b> to move through the flight<br>
+    <b>Drag</b> to compare before &amp; after
+  </div>
+</div>
+
+<div class="viewer-wrap">
+  <div class="viewer" id="viewer">
+    <img id="imgAfter"  class="layer" src="frames/after/0001.jpg"  alt="" draggable="false">
+    <img id="imgBefore" class="layer" src="frames/before/0001.jpg" alt="" draggable="false">
+
+    <div class="tag before" id="tagBefore">Before</div>
+    <div class="tag after"  id="tagAfter">After · Construction</div>
+
+    <div class="time-badge" id="timeBadge">0:00 / 0:31</div>
+
+    <div class="loading" id="loading">
+      <div class="load-label" id="loadLabel">Loading frames…</div>
+      <div class="load-bar-wrap"><div class="load-bar" id="loadBar"></div></div>
+    </div>
+
+    <!-- POI Dots -->
+    <div class="poi-layer" id="poiLayer">
+      <div class="poi-dot" id="poi1">
+        <div class="poi-inner">1</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">01 · New Green</span>
+          <div class="poi-title">New Green</div>
+          <div class="poi-body">New Practice Green at the maintenance building.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi2">
+        <div class="poi-inner">2</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">02 · New Bunker</span>
+          <div class="poi-title">New Bunker</div>
+          <div class="poi-body">New bunker for short game bunker practice.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi3">
+        <div class="poi-inner">3</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">03 · Pitch Areas</span>
+          <div class="poi-title">Pitch Areas</div>
+          <div class="poi-body">Closely mown pitch areas provide various practice angles to the new green.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi4">
+        <div class="poi-inner">4</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">04 · Pitch Areas</span>
+          <div class="poi-title">Pitch Areas</div>
+          <div class="poi-body">Closely mown pitch areas provide various practice angles to the new green.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi5">
+        <div class="poi-inner">5</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">05 · Hillside Cleanup</span>
+          <div class="poi-title">Hillside Cleanup</div>
+          <div class="poi-body">Trees and shrubs have been removed from the hillside to accommodate the new practice area.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  <span class="label">The Northeast Golf <b>Company</b></span>
+  <div class="scrub-bar" id="scrubBar"><div class="scrub-fill" id="scrubFill"></div></div>
+  <span class="label">Madison · <b>NJ</b></span>
+</div>
+
+<script>
+  const TOTAL       = 312;
+  const FPS         = 10;
+  const DURATION    = TOTAL / FPS;        // 31.2 s
+  const SENSITIVITY = 0.0007;
+
+  const viewer    = document.getElementById('viewer');
+  const imgBefore = document.getElementById('imgBefore');
+  const imgAfter  = document.getElementById('imgAfter');
+  const tagBefore = document.getElementById('tagBefore');
+  const tagAfter  = document.getElementById('tagAfter');
+  const timeBadge = document.getElementById('timeBadge');
+
+  // Fade: before image goes from opacity 1 → 0 between 40%–60% of total progress
+  const FADE_START = 0.25;
+  const FADE_END   = 0.45;
+  function beforeOpacity(progress) {
+    if (progress <= FADE_START) return 1;
+    if (progress >= FADE_END)   return 0;
+    return 1 - (progress - FADE_START) / (FADE_END - FADE_START);
+  }
+  const scrubFill = document.getElementById('scrubFill');
+  const loading   = document.getElementById('loading');
+  const loadBar   = document.getElementById('loadBar');
+  const loadLabel = document.getElementById('loadLabel');
+  const scrubBar  = document.getElementById('scrubBar');
+
+  // Pre-cache all frames as Image objects
+  const beforeImgs = new Array(TOTAL);
+  const afterImgs  = new Array(TOTAL);
+  let loaded = 0;
+
+  function pad(n) { return String(n).padStart(4, '0'); }
+  function fmt(s)  { const m = Math.floor(s/60), ss = Math.floor(s%60); return `${m}:${ss.toString().padStart(2,'0')}`; }
+
+  function onLoad() {
+    loaded++;
+    const pct = (loaded / (TOTAL * 2)) * 100;
+    loadBar.style.width = pct.toFixed(1) + '%';
+    if (loaded === TOTAL * 2) {
+      loading.classList.add('hide');
+      showFrame(0);
+    }
+  }
+
+  for (let i = 0; i < TOTAL; i++) {
+    const n = pad(i + 1);
+    beforeImgs[i] = new Image();
+    beforeImgs[i].onload = onLoad;
+    beforeImgs[i].src = `frames/before/${n}.jpg`;
+
+    afterImgs[i] = new Image();
+    afterImgs[i].onload = onLoad;
+    afterImgs[i].src = `frames/after/${n}.jpg`;
+  }
+
+  // ── Display ──
+  let currentFrame = -1;
+  let targetProgress = 0;
+  let rafId = null;
+
+  // ── POI Dots — piecewise linear across 17 keyframes ──
+  const KF_FRAMES = [0,20,40,60,80,100,120,140,160,180,200,220,240,260,280,300,311];
+  const KF_DOTS = [
+    [{x:41.4,y:35.7},{x:49.1,y:52.9},{x:37.2,y:63.1},{x:28.5,y:26.7},{x:54.3,y:28.2}],
+    [{x:41.3,y:36.8},{x:51.8,y:54.3},{x:40.7,y:64.9},{x:27.0,y:28.1},{x:54.3,y:28.2}],
+    [{x:41.3,y:36.8},{x:53.0,y:53.4},{x:43.9,y:64.7},{x:24.1,y:29.4},{x:52.3,y:26.7}],
+    [{x:41.3,y:36.8},{x:54.4,y:51.7},{x:47.1,y:63.2},{x:22.2,y:31.0},{x:50.7,y:26.4}],
+    [{x:40.4,y:37.4},{x:55.5,y:51.0},{x:50.8,y:62.7},{x:20.3,y:32.3},{x:49.3,y:26.4}],
+    [{x:39.9,y:39.0},{x:55.5,y:51.0},{x:52.9,y:63.5},{x:17.4,y:34.9},{x:47.5,y:26.3}],
+    [{x:39.7,y:39.6},{x:56.3,y:50.2},{x:55.8,y:63.0},{x:13.9,y:38.3},{x:45.3,y:27.0}],
+    [{x:39.1,y:41.1},{x:56.7,y:48.8},{x:57.9,y:61.3},{x:11.9,y:39.7},{x:42.9,y:27.0}],
+    [{x:39.1,y:41.1},{x:56.8,y:48.0},{x:60.3,y:59.8},{x:10.3,y:42.8},{x:40.4,y:27.0}],
+    [{x:38.4,y:42.0},{x:56.6,y:47.0},{x:61.7,y:58.1},{x: 7.7,y:47.5},{x:38.8,y:27.8}],
+    [{x:38.0,y:42.2},{x:56.2,y:46.1},{x:62.7,y:56.4},{x: 7.8,y:49.7},{x:36.2,y:27.8}],
+    [{x:37.1,y:43.2},{x:55.7,y:45.6},{x:64.2,y:54.4},{x: 7.2,y:53.6},{x:34.4,y:29.3}],
+    [{x:37.4,y:44.7},{x:55.7,y:45.6},{x:65.0,y:54.3},{x: 7.3,y:60.5},{x:32.4,y:31.2}],
+    [{x:36.8,y:46.4},{x:55.2,y:45.3},{x:65.8,y:53.4},{x: 7.8,y:63.8},{x:31.2,y:32.2}],
+    [{x:37.5,y:48.1},{x:55.2,y:45.3},{x:67.1,y:52.7},{x:10.7,y:69.9},{x:29.9,y:33.9}],
+    [{x:38.2,y:50.6},{x:54.5,y:45.3},{x:68.3,y:51.3},{x:13.7,y:74.5},{x:28.3,y:36.0}],
+    [{x:38.2,y:51.3},{x:54.5,y:45.3},{x:68.7,y:51.3},{x:14.9,y:76.8},{x:28.1,y:37.0}],
+  ];
+  const poiEls = [1,2,3,4,5].map(id => document.getElementById('poi' + id));
+
+  poiEls.forEach(el => el.addEventListener('pointerdown', e => e.stopPropagation()));
+
+  function dotPos(dotIdx, frameIdx) {
+    const kf = KF_FRAMES;
+    if (frameIdx <= kf[0]) return KF_DOTS[0][dotIdx];
+    if (frameIdx >= kf[kf.length - 1]) return KF_DOTS[kf.length - 1][dotIdx];
+    let lo = 0;
+    for (let k = 0; k < kf.length - 1; k++) {
+      if (frameIdx >= kf[k] && frameIdx <= kf[k + 1]) { lo = k; break; }
+    }
+    const hi = lo + 1;
+    const t = (frameIdx - kf[lo]) / (kf[hi] - kf[lo]);
+    const a = KF_DOTS[lo][dotIdx];
+    const b = KF_DOTS[hi][dotIdx];
+    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+  }
+
+  function updatePoi(frameIdx) {
+    for (let i = 0; i < 5; i++) {
+      const {x, y} = dotPos(i, frameIdx);
+      poiEls[i].style.left = x.toFixed(2) + '%';
+      poiEls[i].style.top  = y.toFixed(2) + '%';
+      poiEls[i].classList.toggle('tip-below', y < 40);
+      poiEls[i].classList.toggle('tip-right',  x > 72);
+    }
+  }
+
+  function showFrame(idx) {
+    idx = Math.max(0, Math.min(TOTAL - 1, idx));
+    if (idx === currentFrame && loaded === TOTAL * 2) return;
+    currentFrame = idx;
+    imgBefore.src = beforeImgs[idx].src;
+    imgAfter.src  = afterImgs[idx].src;
+
+    const progress = idx / (TOTAL - 1);
+    const op = beforeOpacity(progress);
+    imgBefore.style.opacity = op;
+    tagBefore.style.opacity = op;
+    tagAfter.style.opacity  = 1 - op;
+
+    const t = idx / FPS;
+    const pct = (progress * 100).toFixed(2) + '%';
+    scrubFill.style.width = pct;
+    timeBadge.textContent = `${fmt(t)} / ${fmt(DURATION)}`;
+    updatePoi(idx);
+  }
+
+  // Lerp-smooth scroll → frame index
+  let smoothProgress = 0;
+  const LERP = 0.12;
+  const SNAP = 0.5 / (TOTAL - 1); // less than half a frame
+
+  function tick() {
+    const diff = targetProgress - smoothProgress;
+    if (Math.abs(diff) < SNAP) {
+      smoothProgress = targetProgress;
+      showFrame(Math.round(smoothProgress * (TOTAL - 1)));
+      rafId = null;
+      return;
+    }
+    smoothProgress += diff * LERP;
+    showFrame(Math.round(smoothProgress * (TOTAL - 1)));
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function schedule() { if (!rafId) rafId = requestAnimationFrame(tick); }
+
+  // ── Scroll ──
+  viewer.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    targetProgress += e.deltaY * SENSITIVITY;
+    targetProgress = Math.max(0, Math.min(1, targetProgress));
+    schedule();
+  }, { passive: false });
+
+  // ── Footer scrub bar ──
+  let scrubbing = false;
+  function scrubTo(cx) {
+    const r = scrubBar.getBoundingClientRect();
+    targetProgress = Math.max(0, Math.min(1, (cx - r.left) / r.width));
+    smoothProgress = targetProgress;
+    showFrame(Math.round(targetProgress * (TOTAL - 1)));
+  }
+  scrubBar.addEventListener('pointerdown', (e) => { scrubbing = true; scrubBar.setPointerCapture(e.pointerId); scrubTo(e.clientX); });
+  scrubBar.addEventListener('pointermove', (e) => { if (scrubbing) scrubTo(e.clientX); });
+  scrubBar.addEventListener('pointerup',   () => { scrubbing = false; });
+
+  // ── Arrow keys ──
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { targetProgress = Math.min(1, targetProgress + 1/(TOTAL-1)); schedule(); }
+    if (e.key === 'ArrowLeft')  { targetProgress = Math.max(0, targetProgress - 1/(TOTAL-1)); schedule(); }
+  });
+</script>
+</body>
+</html>
