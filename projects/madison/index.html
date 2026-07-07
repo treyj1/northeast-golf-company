@@ -181,12 +181,15 @@
   }
   .label b { color: var(--text-muted); font-weight: 700; }
   .scrub-bar {
+    position: relative;
     flex: 1; height: 2px;
     background: var(--border);
     margin: 0 20px;
     cursor: pointer;
   }
   .scrub-fill { height: 100%; width: 0%; background: var(--primary); }
+  .scrub-thumb { display: none; }
+  .hint-mobile { display: none; }
 
   /* ── POI Dots ── */
   .poi-layer {
@@ -283,6 +286,40 @@
   .poi-body {
     font-size: 0.72rem; line-height: 1.6; color: var(--text-muted);
   }
+
+  /* ── Mobile: physical slider replaces scroll-driven panning ── */
+  @media (max-width: 768px), (pointer: coarse) {
+    .hint-desktop { display: none; }
+    .hint-mobile  { display: block; }
+
+    .foot { padding: 14px 20px; }
+
+    .scrub-bar {
+      height: 6px;
+      border-radius: 3px;
+      margin: 0 18px;
+      touch-action: none;
+    }
+    .scrub-bar::before {
+      /* enlarges the touch hit-area without changing the visual track height */
+      content: '';
+      position: absolute;
+      top: -18px; bottom: -18px; left: 0; right: 0;
+    }
+    .scrub-fill { border-radius: 3px; }
+    .scrub-thumb {
+      display: block;
+      position: absolute;
+      top: 50%; left: 0%;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid var(--surface);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+  }
 </style>
 </head>
 <body>
@@ -292,9 +329,12 @@
     <span class="eyebrow">Selected Work · Madison Golf Club</span>
     <h1>Backyard Renovation</h1>
   </div>
-  <div class="hint">
+  <div class="hint hint-desktop">
     <b>Scroll</b> to move through the flight<br>
     <b>Drag</b> to compare before &amp; after
+  </div>
+  <div class="hint hint-mobile">
+    <b>Drag the slider</b> below to move through the flight
   </div>
 </div>
 
@@ -361,7 +401,7 @@
 
 <div class="foot">
   <span class="label">The Northeast Golf <b>Company</b></span>
-  <div class="scrub-bar" id="scrubBar"><div class="scrub-fill" id="scrubFill"></div></div>
+  <div class="scrub-bar" id="scrubBar"><div class="scrub-fill" id="scrubFill"></div><div class="scrub-thumb" id="scrubThumb"></div></div>
   <span class="label">Madison · <b>NJ</b></span>
 </div>
 
@@ -386,7 +426,8 @@
     if (progress >= FADE_END)   return 0;
     return 1 - (progress - FADE_START) / (FADE_END - FADE_START);
   }
-  const scrubFill = document.getElementById('scrubFill');
+  const scrubFill  = document.getElementById('scrubFill');
+  const scrubThumb = document.getElementById('scrubThumb');
   const loading   = document.getElementById('loading');
   const loadBar   = document.getElementById('loadBar');
   const loadLabel = document.getElementById('loadLabel');
@@ -492,6 +533,7 @@
     const t = idx / FPS;
     const pct = (progress * 100).toFixed(2) + '%';
     scrubFill.style.width = pct;
+    scrubThumb.style.left = pct;
     timeBadge.textContent = `${fmt(t)} / ${fmt(DURATION)}`;
     updatePoi(idx);
   }
