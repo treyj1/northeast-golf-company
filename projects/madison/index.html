@@ -85,8 +85,10 @@
     flex: 1;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 12px;
     padding: 20px 28px;
     min-height: 0;
   }
@@ -161,6 +163,34 @@
     height: 100%; width: 0%;
     background: var(--primary);
     transition: width 0.1s linear;
+  }
+
+  /* ── Scroll note ── */
+  .scroll-note {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: min(100%, calc((100vh - 160px) * 16 / 9));
+    padding: 9px 16px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--primary);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .scroll-note b { color: var(--primary); }
+  .scroll-note .note-mobile { display: none; }
+
+  @media (max-width: 768px), (pointer: coarse) {
+    .scroll-note .note-desktop { display: none; }
+    .scroll-note .note-mobile  { display: inline; }
   }
 
   /* ── Footer ── */
@@ -396,6 +426,11 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="scroll-note">
+    <span class="note-desktop"><b>Scroll</b> over the image to see the evolution of the hole</span>
+    <span class="note-mobile"><b>Drag</b> the slider below to see the evolution of the hole</span>
   </div>
 </div>
 
