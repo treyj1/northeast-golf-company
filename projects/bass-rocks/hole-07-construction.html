@@ -329,7 +329,13 @@
     pointer-events: auto;
     transform: translate(-50%, -50%);
     cursor: pointer;
+    z-index: 1;
   }
+  /* .poi-dot's transform makes it its own stacking context, so a tooltip's z-index only
+     applies within its own dot — without this, a later dot in the DOM paints its whole
+     stacking context (marker included) over an earlier dot's open tooltip. Bump the
+     hovered dot's z-index so its tooltip always wins over sibling dots. */
+  .poi-dot:hover { z-index: 20; }
   .poi-inner {
     position: relative;
     width: 26px; height: 26px; border-radius: 50%;
@@ -770,7 +776,8 @@
   const TOTAL       = 396;
   const FPS         = 6;
   const DURATION    = TOTAL / FPS;   // 66 s
-  const SENSITIVITY = 0.0007;
+  // A standard mouse-wheel notch reports deltaY ≈ 100 — calibrate so one notch moves ~1s of video.
+  const SENSITIVITY = 1 / (100 * DURATION);
 
   const viewer    = document.getElementById('viewer');
   const imgBefore = document.getElementById('imgBefore');
