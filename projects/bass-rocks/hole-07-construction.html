@@ -316,6 +316,92 @@
   .compare-toggle:hover { background: rgba(0,0,0,0.78); border-color: rgba(255,255,255,0.65); }
   .compare-toggle svg { width: 12px; height: 12px; flex: none; }
 
+  /* ── POI Dots ── */
+  :root            { --poi-color: var(--accent-gold); }
+  body.onyx-theme  { --poi-color: #FFB400; }
+  body.slate-theme { --poi-color: #FFB400; }
+  .poi-layer {
+    position: absolute; inset: 0; z-index: 6;
+    pointer-events: none;
+  }
+  .poi-dot {
+    position: absolute;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  .poi-inner {
+    position: relative;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--poi-color);
+    border: 2px solid rgba(255,255,255,0.85);
+    color: #16130a;
+    font-family: var(--font-mono);
+    font-size: 0.6rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .poi-inner::before, .poi-inner::after {
+    content: '';
+    position: absolute;
+    inset: -2px; border-radius: 50%;
+    border: 1.5px solid var(--poi-color);
+    animation: poi-halo 2.4s ease-out infinite;
+    pointer-events: none;
+  }
+  .poi-inner::after { animation-delay: 1.2s; }
+  @keyframes poi-halo {
+    0%   { transform: scale(1);   opacity: 0.8; }
+    100% { transform: scale(2.6); opacity: 0;   }
+  }
+
+  .poi-tooltip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%; transform: translateX(-50%);
+    width: 210px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    padding: 12px 14px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+  .poi-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 9px; height: 9px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .poi-dot:hover .poi-tooltip { opacity: 1; }
+  .poi-dot.tip-below .poi-tooltip { bottom: auto; top: calc(100% + 12px); }
+  .poi-dot.tip-below .poi-tooltip::after {
+    bottom: auto; top: -5px;
+    border-right: none; border-bottom: none;
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .poi-dot.tip-right .poi-tooltip { left: auto; right: 0; transform: none; }
+  .poi-dot.tip-right .poi-tooltip::after { left: auto; right: 12px; transform: rotate(45deg); }
+
+  .poi-tip-num {
+    font-family: var(--font-mono);
+    font-size: 0.5rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--poi-color); margin-bottom: 5px; display: block;
+  }
+  .poi-title {
+    font-family: var(--font-serif);
+    font-size: 1.02rem; font-weight: 500;
+    color: var(--text); margin-bottom: 6px; line-height: 1.2;
+  }
+  .poi-body { font-size: 0.72rem; line-height: 1.6; color: var(--text-muted); }
+
   .loading {
     position: absolute; inset: 0; z-index: 10;
     display: flex; flex-direction: column;
@@ -575,6 +661,41 @@
       <span id="compareToggleLabel">Show After</span>
     </button>
 
+    <div class="poi-layer" id="poiLayer">
+      <div class="poi-dot" id="poi1">
+        <div class="poi-inner">1</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">01 · Former Green</span>
+          <div class="poi-title">Former Green</div>
+          <div class="poi-body">The former green was nearly unplayable due to severe slopes, and did not fit the exciting, strategic character or the rest of the course.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi2">
+        <div class="poi-inner">2</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">02 · New Green</span>
+          <div class="poi-title">New Green</div>
+          <div class="poi-body">The new 7th green is further back and to the right of the former green, with internal contours that provide variety with changing hole locations.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi3">
+        <div class="poi-inner">3</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">03 · New 8th Back Tee</span>
+          <div class="poi-title">New 8th Back Tee</div>
+          <div class="poi-body">Repositioning the 7th green allowed for the construction of a new back tee on hole 8, adding length and variety to a great par 3.</div>
+        </div>
+      </div>
+      <div class="poi-dot" id="poi4">
+        <div class="poi-inner">4</div>
+        <div class="poi-tooltip">
+          <span class="poi-tip-num">04 · New Run On Approach</span>
+          <div class="poi-title">New Run On Approach</div>
+          <div class="poi-body">A new run on area to the new 7th green allows for run on shots to the par 5, but the size and position of the run-on area makes attempts at the green from this angle risky.</div>
+        </div>
+      </div>
+    </div>
+
     <div class="time-badge" id="timeBadge">0:00 / 1:06</div>
 
     <div class="loading" id="loading">
@@ -722,6 +843,69 @@
     afterImgs[i].src = `frames/hole-07-construction/after/${n}.jpg`;
   }
 
+  // ── POI Dots — piecewise linear across keyframes, each fading in on its own schedule ──
+  const KF_FRAMES = [0,61,128,148,175,191,246,303,321,339,345,360,395];
+  const KF_DOTS = [
+    [{x:20.77,y:50.81},{x:23.86,y:50.19},{x: 6.44,y:49.57},{x:22.72,y:51.26}],
+    [{x:26.81,y:52.23},{x:31.95,y:51.08},{x: 8.24,y:50.64},{x:29.76,y:52.94}],
+    [{x:31.55,y:54.27},{x:39.44,y:53.65},{x:13.28,y:52.68},{x:35.75,y:56.14}],
+    [{x:32.45,y:55.07},{x:41.49,y:54.45},{x:14.93,y:52.68},{x:36.89,y:57.11}],
+    [{x:35.85,y:56.23},{x:49.13,y:55.87},{x:19.77,y:52.94},{x:40.29,y:57.56}],
+    [{x:39.64,y:56.67},{x:53.82,y:56.49},{x:23.17,y:53.65},{x:44.83,y:58.45}],
+    [{x:46.48,y:59.16},{x:67.95,y:59.16},{x:32.00,y:53.92},{x:54.82,y:61.29}],
+    [{x:48.08,y:64.92},{x:77.23,y:63.50},{x:34.90,y:55.61},{x:56.91,y:66.97}],
+    [{x:47.93,y:60.75},{x:81.33,y:61.82},{x:36.79,y:52.41},{x:57.31,y:65.37}],
+    [{x:49.13,y:55.61},{x:85.52,y:57.20},{x:40.09,y:45.66},{x:58.56,y:60.49}],
+    [{x:48.43,y:54.63},{x:86.97,y:57.20},{x:41.19,y:43.18},{x:59.01,y:59.33}],
+    [{x:46.98,y:53.92},{x:88.52,y:56.85},{x:42.44,y:42.03},{x:56.57,y:58.36}],
+    [{x:44.48,y:53.21},{x:90.61,y:61.37},{x:47.53,y:42.38},{x:53.32,y:60.22}],
+  ];
+  const POI_META = [
+    { fadeStart: 0,   fadeDuration: 20 }, // 1 · Former Green
+    { fadeStart: 61,  fadeDuration: 20 }, // 2 · New Green
+    { fadeStart: 191, fadeDuration: 20 }, // 3 · New 8th Back Tee
+    { fadeStart: 191, fadeDuration: 20 }, // 4 · New Run On Approach
+  ];
+  const poiEls = [1,2,3,4].map(id => document.getElementById('poi' + id));
+  poiEls.forEach(el => el.addEventListener('pointerdown', e => e.stopPropagation()));
+
+  function dotPos(dotIdx, frameIdx) {
+    const kf = KF_FRAMES;
+    if (frameIdx <= kf[0]) return KF_DOTS[0][dotIdx];
+    if (frameIdx >= kf[kf.length - 1]) return KF_DOTS[kf.length - 1][dotIdx];
+    let lo = 0;
+    for (let k = 0; k < kf.length - 1; k++) {
+      if (frameIdx >= kf[k] && frameIdx <= kf[k + 1]) { lo = k; break; }
+    }
+    const hi = lo + 1;
+    const t = (frameIdx - kf[lo]) / (kf[hi] - kf[lo]);
+    const a = KF_DOTS[lo][dotIdx];
+    const b = KF_DOTS[hi][dotIdx];
+    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+  }
+
+  function dotOpacity(meta, frameIdx) {
+    const start = meta.fadeStart || 0;
+    const dur = Math.max(1, meta.fadeDuration || 1);
+    if (frameIdx <= start) return 0;
+    if (frameIdx >= start + dur) return 1;
+    return (frameIdx - start) / dur;
+  }
+
+  function updatePoi(frameIdx) {
+    for (let i = 0; i < poiEls.length; i++) {
+      const { x, y } = dotPos(i, frameIdx);
+      const op = dotOpacity(POI_META[i], frameIdx);
+      const el = poiEls[i];
+      el.style.left = x.toFixed(2) + '%';
+      el.style.top  = y.toFixed(2) + '%';
+      el.style.opacity = op;
+      el.style.pointerEvents = op < 0.05 ? 'none' : 'auto';
+      el.classList.toggle('tip-below', y < 40);
+      el.classList.toggle('tip-right', x > 72);
+    }
+  }
+
   let currentFrame = -1;
   let targetProgress = 0;
   let rafId = null;
@@ -751,6 +935,8 @@
     scrubFill.style.width = pct;
     scrubThumb.style.left = pct;
     timeBadge.textContent = `${fmt(t)} / ${fmt(DURATION)}`;
+
+    updatePoi(idx);
   }
 
   let smoothProgress = 0;
