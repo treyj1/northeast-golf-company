@@ -294,6 +294,28 @@
     pointer-events: none;
   }
 
+  .compare-toggle {
+    position: absolute; top: 14px; left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    z-index: 5;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 14px 7px 12px;
+    background: rgba(0,0,0,0.55);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .compare-toggle.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+  .compare-toggle:hover { background: rgba(0,0,0,0.78); border-color: rgba(255,255,255,0.65); }
+  .compare-toggle svg { width: 12px; height: 12px; flex: none; }
+
   .loading {
     position: absolute; inset: 0; z-index: 10;
     display: flex; flex-direction: column;
@@ -548,6 +570,11 @@
     <div class="tag before" id="tagBefore">Before</div>
     <div class="tag after"  id="tagAfter">After · Reconstruction</div>
 
+    <button class="compare-toggle" id="compareToggle" type="button" aria-label="Toggle before/after at this point in the flight">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3 3 7l4 4"></path><path d="M3 7h13a5 5 0 0 1 5 5v1"></path><path d="M17 21l4-4-4-4"></path><path d="M21 17H8a5 5 0 0 1-5-5v-1"></path></svg>
+      <span id="compareToggleLabel">Show After</span>
+    </button>
+
     <div class="time-badge" id="timeBadge">0:00 / 1:06</div>
 
     <div class="loading" id="loading">
@@ -630,6 +657,8 @@
   const tagBefore = document.getElementById('tagBefore');
   const tagAfter  = document.getElementById('tagAfter');
   const timeBadge = document.getElementById('timeBadge');
+  const compareToggle      = document.getElementById('compareToggle');
+  const compareToggleLabel = document.getElementById('compareToggleLabel');
 
   const FADE_START = 0.45;
   const FADE_END   = 0.65;
@@ -637,6 +666,26 @@
     if (progress <= FADE_START) return 1;
     if (progress >= FADE_END)   return 0;
     return 1 - (progress - FADE_START) / (FADE_END - FADE_START);
+  }
+
+  // First after-frame index (0-based) that isn't the video's black lead-in.
+  // The manual compare button only becomes available once real "after" footage exists to show.
+  const AFTER_REAL_FROM = 168;
+  let manualOpacity = null; // null = natural scroll-driven crossfade; 0 or 1 = user-forced via the toggle
+
+  function currentOpacity(idx) {
+    if (manualOpacity !== null) return manualOpacity;
+    return beforeOpacity(idx / (TOTAL - 1));
+  }
+
+  function clearManualOverride() {
+    if (manualOpacity === null) return;
+    manualOpacity = null;
+    imgBefore.style.transition = '';
+  }
+
+  function updateToggleLabel(idx) {
+    compareToggleLabel.textContent = currentOpacity(idx) > 0.5 ? 'Show After' : 'Show Before';
   }
 
   const scrubFill  = document.getElementById('scrubFill');
@@ -680,16 +729,23 @@
   function showFrame(idx) {
     idx = Math.max(0, Math.min(TOTAL - 1, idx));
     if (idx === currentFrame && loaded === TOTAL * 2) return;
+
+    const afterWasReal = currentFrame >= AFTER_REAL_FROM;
     currentFrame = idx;
     imgBefore.src = beforeImgs[idx].src;
     imgAfter.src  = afterImgs[idx].src;
 
-    const progress = idx / (TOTAL - 1);
-    const op = beforeOpacity(progress);
+    const afterIsReal = idx >= AFTER_REAL_FROM;
+    if (!afterIsReal) clearManualOverride();
+    compareToggle.classList.toggle('visible', afterIsReal);
+
+    const op = currentOpacity(idx);
     imgBefore.style.opacity = op;
     tagBefore.style.opacity = op;
     tagAfter.style.opacity  = 1 - op;
+    if (afterIsReal !== afterWasReal || manualOpacity === null) updateToggleLabel(idx);
 
+    const progress = idx / (TOTAL - 1);
     const t = idx / FPS;
     const pct = (progress * 100).toFixed(2) + '%';
     scrubFill.style.width = pct;
@@ -718,6 +774,7 @@
 
   viewer.addEventListener('wheel', (e) => {
     e.preventDefault();
+    clearManualOverride();
     targetProgress += e.deltaY * SENSITIVITY;
     targetProgress = Math.max(0, Math.min(1, targetProgress));
     schedule();
@@ -725,6 +782,7 @@
 
   let scrubbing = false;
   function scrubTo(cx) {
+    clearManualOverride();
     const r = scrubBar.getBoundingClientRect();
     targetProgress = Math.max(0, Math.min(1, (cx - r.left) / r.width));
     smoothProgress = targetProgress;
@@ -736,8 +794,18 @@
 
   window.addEventListener('keydown', (e) => {
     if (document.activeElement && ['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-    if (e.key === 'ArrowRight') { targetProgress = Math.min(1, targetProgress + 1/(TOTAL-1)); schedule(); }
-    if (e.key === 'ArrowLeft')  { targetProgress = Math.max(0, targetProgress - 1/(TOTAL-1)); schedule(); }
+    if (e.key === 'ArrowRight') { clearManualOverride(); targetProgress = Math.min(1, targetProgress + 1/(TOTAL-1)); schedule(); }
+    if (e.key === 'ArrowLeft')  { clearManualOverride(); targetProgress = Math.max(0, targetProgress - 1/(TOTAL-1)); schedule(); }
+  });
+
+  compareToggle.addEventListener('click', () => {
+    if (currentFrame < AFTER_REAL_FROM) return;
+    manualOpacity = currentOpacity(currentFrame) > 0.5 ? 0 : 1;
+    imgBefore.style.transition = 'opacity 0.5s ease';
+    imgBefore.style.opacity = manualOpacity;
+    tagBefore.style.opacity = manualOpacity;
+    tagAfter.style.opacity  = 1 - manualOpacity;
+    updateToggleLabel(currentFrame);
   });
 </script>
 </body></html>
